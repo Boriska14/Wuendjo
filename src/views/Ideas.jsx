@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useApp, useForm, cur } from '../ctx.js';
 import { SUGGESTIONS } from '../data.js';
+import { DeleteBtn } from '../ui.jsx';
 import { Compass, Utensils, Sparkles, MapPin, Star, Plus, Check, ThumbsUp, Camera, ExternalLink } from 'lucide-react';
 
 export default function Ideas() {
-  const { t, upd } = useApp();
+  const { t, upd, org } = useApp();
   const [f, b, reset] = useForm({ k: 'Restaurant' });
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [modeFilter, setModeFilter] = useState('all');
@@ -184,14 +185,22 @@ export default function Ideas() {
                   </div>
                   {x.z && <div className="mut" style={{ fontSize: '13px', marginTop: '2px' }}>{x.z}</div>}
                 </div>
-                <button
-                  className="alt sm"
-                  style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
-                  onClick={() => upd(s => { cur(s).ideas[j].v++; })}
-                >
-                  <ThumbsUp size={12} />
-                  <b>+1</b> · {x.v}
-                </button>
+                <div className="row-actions">
+                  <button
+                    className="alt sm"
+                    style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
+                    onClick={() => upd(s => { cur(s).ideas[j].v++; })}
+                  >
+                    <ThumbsUp size={12} />
+                    <b>+1</b> · {x.v}
+                  </button>
+                  {org && (
+                    <DeleteBtn
+                      label={`Supprimer ${x.n}`}
+                      onConfirm={() => upd(s => { cur(s).ideas.splice(j, 1); })}
+                    />
+                  )}
+                </div>
               </div>
             ))}
 

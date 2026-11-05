@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp, useForm, cur, F, STATUS_MAP } from '../ctx.js';
 import { TYPES } from '../data.js';
+import Workflow from '../Workflow.jsx';
 import {
   MapPin,
   Calendar,
@@ -313,13 +314,19 @@ export default function Home() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <div className="check-badge"><Check size={18} strokeWidth={2.5} /></div>
                   <div>
-                    <h3>Vous participez à ce voyage</h3>
-                    <p className="mut">Votre place est enregistrée auprès de l’organisateur ({me ? me.name : myRsvpStatus?.name}).</p>
+                    <h3>{me && me.st === 'ok' ? 'Vous participez à ce voyage' : me && me.st === 'no' ? 'Inscription refusée' : 'Inscription envoyée'}</h3>
+                    <p className="mut">
+                      {me && me.st === 'ok'
+                        ? `Votre place est confirmée (${me.name}).`
+                        : me && me.st === 'no'
+                          ? 'L’organisateur n’a pas pu retenir votre inscription.'
+                          : `Merci ${me ? me.name : myRsvpStatus?.name} : l’organisateur doit valider votre place.`}
+                    </p>
                   </div>
                 </div>
                 <div className="rsvp-actions">
                   <button className="subtle sm" onClick={resetMyRsvp}>Modifier ma réponse</button>
-                  <button className="accent sm" onClick={() => go('chat')}>Ouvrir la discussion</button>
+                  {me && me.st === 'ok' && <button className="accent sm" onClick={() => go('chat')}>Ouvrir la discussion</button>}
                 </div>
               </div>
             )}
@@ -442,6 +449,19 @@ export default function Home() {
         )}
       </section>
 
+      {!isSolo && (
+        <Workflow
+          title="Comment ça marche"
+          subtitle="Quatre gestes simples pour profiter du voyage."
+          steps={[
+            { key: 'a', title: 'Répondre à l’invitation', desc: 'Dites si vous participez, en un clic.', done: Boolean(isEnrolled || hasDeclined) },
+            { key: 'b', title: 'Attendre la validation', desc: 'L’organisateur confirme votre place.', done: Boolean(me && me.st === 'ok') },
+            { key: 'c', title: 'Voter pour les idées', desc: 'Choisissez les activités et adresses du séjour.', onClick: () => go('idees'), cta: 'Idées' },
+            { key: 'd', title: 'Suivre le budget et discuter', desc: 'Retrouvez les dépenses et échangez avec le groupe.', onClick: () => go('budget'), cta: 'Budget' }
+          ]}
+        />
+      )}
+
       {/* Notification Toast de partage */}
       {copiedToast && (
         <div className="toast-feedback">
@@ -462,12 +482,14 @@ export default function Home() {
                 <Calendar size={18} color="var(--gold)" />
                 Programme & Itinéraire du Séjour
               </h2>
-              <button className="subtle sm" onClick={() => setShowAddItin(!showAddItin)}>
-                <Plus size={14} /> Ajouter une étape
-              </button>
+              {org && (
+                <button className="subtle sm" onClick={() => setShowAddItin(!showAddItin)}>
+                  <Plus size={14} /> Ajouter une étape
+                </button>
+              )}
             </div>
 
-            {showAddItin && (
+            {org && showAddItin && (
               <div style={{ background: 'var(--card-subtle)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '16px', border: '1px solid var(--border)' }}>
                 <h3 style={{ fontSize: '14px', margin: '0 0 8px' }}>Nouvelle étape de voyage</h3>
                 <div className="grid-2">
@@ -509,9 +531,11 @@ export default function Home() {
             ) : (
               <div className="empty-box">
                 <p>Aucune étape planifiée pour le moment.</p>
-                <button className="subtle sm" onClick={() => setShowAddItin(true)}>
-                  <Plus size={14} /> Planifier la première étape
-                </button>
+                {org && (
+                  <button className="subtle sm" onClick={() => setShowAddItin(true)}>
+                    <Plus size={14} /> Planifier la première étape
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -572,6 +596,7 @@ export default function Home() {
               ))}
             </div>
 
+            {org && (
             <div style={{ marginTop: '14px', display: 'flex', gap: '8px' }}>
               <input
                 value={newCheckItem}
@@ -584,6 +609,7 @@ export default function Home() {
                 <Plus size={15} />
               </button>
             </div>
+            )}
           </div>
 
           {/* Participants confirmés */}
