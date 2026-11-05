@@ -56,7 +56,7 @@ export default function Chat() {
     const notes = t.notes || [];
     return (
       <div>
-        <div className="card card-hero">
+        <div className="card card-hero dark-scope">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <BookOpen size={20} color="var(--gold)" />
             <span className="pill primary">Carnet de Route & Pensées</span>
@@ -112,7 +112,7 @@ export default function Chat() {
 
           <div>
             <div className="card" style={{ background: 'var(--card-alt)' }}>
-              <h3>💡 Idées pour votre carnet solo</h3>
+              <h3>Idées pour votre carnet solo</h3>
               <ul style={{ paddingLeft: '18px', fontSize: '13px', color: 'var(--text-muted)', lineHeight: '1.7', margin: '8px 0 0' }}>
                 <li>Une phrase marquante entendue dans la journée</li>
                 <li>Le meilleur plat dégusté et son odeur</li>
@@ -130,7 +130,7 @@ export default function Chat() {
   const msgs = t.msgs || [];
   return (
     <div>
-      <div className="card card-hero">
+      <div className="card card-hero dark-scope">
         <h1 className="big" style={{ margin: '0 0 6px', fontSize: '26px' }}>
           Discussion du Groupe Wuendjo
         </h1>

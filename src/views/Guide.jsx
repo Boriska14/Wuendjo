@@ -7,7 +7,7 @@ export default function Guide() {
 
   return (
     <div>
-      <div className="card card-hero">
+      <div className="card card-hero dark-scope">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
           <Compass size={20} color="var(--gold)" />
           <span className="pill primary">Manuel du Maître du Jeu Wuendjo</span>

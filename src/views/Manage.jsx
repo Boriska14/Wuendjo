@@ -48,7 +48,7 @@ export default function Manage() {
 
   return (
     <div>
-      <div className="card card-hero">
+      <div className="card card-hero dark-scope">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
           <Settings size={20} color="var(--gold)" />
           <span className="pill primary">Tableau de bord de Gestion</span>
@@ -132,7 +132,7 @@ export default function Manage() {
                   {(t.declined || []).map((d, idx) => (
                     <div key={d.id || idx} className="row">
                       <div>
-                        <b style={{ color: '#FFFFFF' }}>{d.name}</b>
+                        <b>{d.name}</b>
                         {d.date && <span className="mut" style={{ fontSize: '11px', marginLeft: '6px' }}>({d.date})</span>}
                         {d.why && (
                           <div style={{ fontSize: '12.5px', color: 'var(--text-muted)', fontStyle: 'italic', marginTop: '2px' }}>

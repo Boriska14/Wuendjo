@@ -48,7 +48,7 @@ export default function Ideas() {
 
   return (
     <div>
-      <div className="card card-hero">
+      <div className="card card-hero dark-scope">
         <h1 className="big" style={{ margin: '0 0 6px', fontSize: '26px' }}>
           Idées, Suggestions & Bonnes Adresses
         </h1>
@@ -125,7 +125,7 @@ export default function Ideas() {
                   </span>
                 </div>
 
-                <h3 style={{ fontSize: '17px', lineHeight: '1.3', marginBottom: '6px', color: '#FFF6EE' }}>
+                <h3 style={{ fontSize: '17px', lineHeight: '1.3', marginBottom: '6px', color: 'var(--text)' }}>
                   {item.title}
                 </h3>
 
@@ -139,8 +139,8 @@ export default function Ideas() {
                 </p>
 
                 {item.highlight && (
-                  <div style={{ background: 'var(--card-alt)', padding: '8px 12px', borderRadius: 'var(--radius-sm)', fontSize: '12px', color: '#FFF6EE', marginBottom: '12px', border: '1px solid var(--border)' }}>
-                    💡 <b>Atout :</b> {item.highlight}
+                  <div style={{ background: 'var(--card-alt)', padding: '8px 12px', borderRadius: 'var(--radius-sm)', fontSize: '12px', color: 'var(--text)', marginBottom: '12px', border: '1px solid var(--border)' }}>
+                    <b>Atout :</b> {item.highlight}
                   </div>
                 )}
 
@@ -151,7 +151,7 @@ export default function Ideas() {
 
               <div style={{ paddingTop: '12px', borderTop: '1px solid var(--border-light)' }}>
                 {isAdded ? (
-                  <button className="subtle sm" style={{ width: '100%', color: 'var(--olive)', borderColor: 'var(--olive)', fontWeight: 700 }} disabled>
+                  <button className="subtle sm" style={{ width: '100%', color: 'var(--olive-text)', borderColor: 'var(--olive-text)', fontWeight: 700 }} disabled>
                     <Check size={14} /> Retenu pour le voyage
                   </button>
                 ) : (

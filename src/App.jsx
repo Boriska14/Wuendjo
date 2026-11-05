@@ -128,7 +128,7 @@ export default function App() {
     <Ctx.Provider value={{ S, t, me, org, ok, upd, go }}>
       <div id="app">
         {/* HEADER PRINCIPAL DU SITE */}
-        <header className="site-header">
+        <header className="site-header dark-scope">
           <div className="site-header-inner">
             {/* Zone Marque */}
             <div className="brand-wrap" onClick={() => go('home')}>
@@ -143,7 +143,7 @@ export default function App() {
             <div className="header-controls">
               {/* Sélecteur de voyage */}
               <div className="trip-select-box">
-                <Compass size={16} color="var(--gold)" style={{ marginLeft: '4px' }} />
+                <Compass size={16} color="var(--text-muted)" />
                 <select
                   value={S.t}
                   onChange={e => upd(s => { s.t = +e.target.value; s.tab = 'home'; })}
@@ -162,7 +162,7 @@ export default function App() {
                   }}
                 >
                   {(S.trips || []).map((x, i) => (
-                    <option key={i} value={i} style={{ background: '#230F08', color: '#FAF0E6' }}>
+                    <option key={i} value={i} >
                       {x.name} ({x.mode === 'solo' ? 'Solo' : 'Groupe'})
                     </option>
                   ))}
@@ -194,13 +194,12 @@ export default function App() {
                       fontSize: '12.5px',
                       fontWeight: 600,
                       background: 'var(--card)',
-                      borderColor: 'var(--border)',
                       minHeight: '38px',
                       width: 'auto'
                     }}
                   >
-                    <option value="o">👑 Organisateur</option>
-                    <option value="p">👤 Participant</option>
+                    <option value="o">Organisateur</option>
+                    <option value="p">Participant</option>
                   </select>
                 </div>
               )}

@@ -83,7 +83,7 @@ export default function Visa() {
 
   return (
     <div>
-      <div className="card card-hero">
+      <div className="card card-hero dark-scope">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
           <Globe size={20} color="var(--gold)" />
           <span className="pill primary">Formalités, Visas & Découverte Internationale</span>
@@ -143,7 +143,7 @@ export default function Visa() {
             </div>
 
             {err && (
-              <div style={{ marginTop: '12px', padding: '10px 14px', background: 'rgba(148, 60, 26, 0.25)', color: '#FFB399', border: '1px solid rgba(148, 60, 26, 0.45)', borderRadius: 'var(--radius-sm)', fontSize: '13px' }}>
+              <div style={{ marginTop: '12px', padding: '10px 14px', background: 'var(--bad-bg)', color: 'var(--bad)', border: '1px solid #F0C9C5', borderRadius: 'var(--radius-sm)', fontSize: '13px' }}>
                 {err}
               </div>
             )}
@@ -165,11 +165,11 @@ export default function Visa() {
                       padding: '12px',
                       borderRadius: 'var(--radius-md)',
                       background: detn === x.n ? 'var(--card-alt)' : 'var(--card-subtle)',
-                      border: detn === x.n ? '1.5px solid var(--gold)' : '1px solid var(--border)'
+                      border: detn === x.n ? '1px solid var(--accent)' : '1px solid var(--border)'
                     }}
                   >
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '15px', color: '#FFF6EE' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '15px', color: 'var(--text)' }}>
                         <MapPin size={14} color="var(--gold)" /> {x.n}
                       </div>
                       <div className="mut" style={{ fontSize: '13px', marginTop: '4px' }}>
@@ -177,13 +177,13 @@ export default function Visa() {
                       </div>
                       {(x.currency || x.best_season) && (
                         <div style={{ display: 'flex', gap: '8px', marginTop: '6px', fontSize: '11.5px', color: 'var(--text-muted)' }}>
-                          {x.currency && <span>💰 {x.currency}</span>}
-                          {x.best_season && <span>☀️ {x.best_season}</span>}
+                          {x.currency && <span>Devise : {x.currency}</span>}
+                          {x.best_season && <span>Meilleure saison : {x.best_season}</span>}
                         </div>
                       )}
                     </div>
                     <button className="subtle sm" style={{ flexShrink: 0, padding: '4px 8px', fontSize: '12px' }}>
-                      Détails →
+                      Détails
                     </button>
                   </div>
                 ))}
@@ -195,16 +195,16 @@ export default function Visa() {
         {/* Détail de la fiche destination */}
         <div>
           {det ? (
-            <div className="card" style={{ position: 'sticky', top: '130px' }}>
+            <div className="card" style={{ position: 'sticky', top: '72px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <h2>Fiche détaillée : {detn}</h2>
-                <button className="subtle sm" onClick={() => setDet(null)}>✕ Fermer</button>
+                <button className="subtle sm" onClick={() => setDet(null)}>Fermer</button>
               </div>
               <Show data={det} />
             </div>
           ) : (
             <div className="card" style={{ background: 'var(--card-alt)' }}>
-              <h3>🛂 Formalités simplifiées</h3>
+              <h3>Formalités simplifiées</h3>
               <p className="mut" style={{ fontSize: '13.5px', lineHeight: '1.6' }}>
                 Dans l’espace CEMAC et CEDEAO, les citoyens membres bénéficient généralement de la libre circulation sur présentation d’une carte d’identité ou d’un passeport valide.
               </p>

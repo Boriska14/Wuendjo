@@ -34,26 +34,26 @@ import {
 } from 'lucide-react';
 
 const CATEGORY_META = {
-  'Transport': { label: 'Transport', color: '#A7795E', icon: Plane, bg: 'rgba(167, 121, 94, 0.22)' },
-  'Hébergement': { label: 'Hébergement', color: '#943C1A', icon: Home, bg: 'rgba(148, 60, 26, 0.26)' },
-  'Nourriture': { label: 'Nourriture', color: '#BB8130', icon: Utensils, bg: 'rgba(187, 129, 48, 0.24)' },
-  'Activités': { label: 'Activités', color: '#474E30', icon: Sparkles, bg: 'rgba(71, 78, 48, 0.32)' },
-  'Autre': { label: 'Autres', color: '#6E3C19', icon: MoreHorizontal, bg: 'rgba(110, 60, 25, 0.3)' }
+  'Transport': { label: 'Transport', color: '#A7795E', icon: Plane, bg: '#F2E8E0' },
+  'Hébergement': { label: 'Hébergement', color: '#934C1A', icon: Home, bg: '#F3E1CF' },
+  'Nourriture': { label: 'Nourriture', color: '#BB8130', icon: Utensils, bg: '#F7ECD5' },
+  'Activités': { label: 'Activités', color: '#474E30', icon: Sparkles, bg: '#E4E8D5' },
+  'Autre': { label: 'Autres', color: '#6E3C19', icon: MoreHorizontal, bg: '#EADBCB' }
 };
 
 // Grille de devises internationales courantes pour les voyages en Afrique et dans le monde
 // Taux de référence exprimés en FCFA (XAF / XOF)
 const INITIAL_RATES = {
-  XAF: { code: 'XAF', symbol: 'FCFA', name: 'Franc CFA (CEMAC/UEMOA)', rateToFcfa: 1, flag: '🇨🇲' },
-  EUR: { code: 'EUR', symbol: '€', name: 'Euro (Zone Euro)', rateToFcfa: 655.957, flag: '🇪🇺' },
-  USD: { code: 'USD', symbol: '$', name: 'Dollar américain (USA)', rateToFcfa: 605.5, flag: '🇺🇸' },
-  KES: { code: 'KES', symbol: 'KSh', name: 'Shilling kényan (Kenya)', rateToFcfa: 4.70, flag: '🇰🇪' },
-  MAD: { code: 'MAD', symbol: 'DH', name: 'Dirham marocain (Maroc)', rateToFcfa: 60.5, flag: '🇲🇦' },
-  GBP: { code: 'GBP', symbol: '£', name: 'Livre sterling (UK)', rateToFcfa: 780.0, flag: '🇬🇧' },
-  CAD: { code: 'CAD', symbol: 'C$', name: 'Dollar canadien (Canada)', rateToFcfa: 442.0, flag: '🇨🇦' },
-  NGN: { code: 'NGN', symbol: '₦', name: 'Naira (Nigéria)', rateToFcfa: 0.42, flag: '🇳🇬' },
-  GHS: { code: 'GHS', symbol: 'GH₵', name: 'Cedi (Ghana)', rateToFcfa: 39.5, flag: '🇬🇭' },
-  ZAR: { code: 'ZAR', symbol: 'R', name: 'Rand (Afrique du Sud)', rateToFcfa: 34.2, flag: '🇿🇦' }
+  XAF: { code: 'XAF', symbol: 'FCFA', name: 'Franc CFA (CEMAC/UEMOA)', rateToFcfa: 1 },
+  EUR: { code: 'EUR', symbol: '€', name: 'Euro (Zone Euro)', rateToFcfa: 655.957 },
+  USD: { code: 'USD', symbol: '$', name: 'Dollar américain (USA)', rateToFcfa: 605.5 },
+  KES: { code: 'KES', symbol: 'KSh', name: 'Shilling kényan (Kenya)', rateToFcfa: 4.70 },
+  MAD: { code: 'MAD', symbol: 'DH', name: 'Dirham marocain (Maroc)', rateToFcfa: 60.5 },
+  GBP: { code: 'GBP', symbol: '£', name: 'Livre sterling (UK)', rateToFcfa: 780.0 },
+  CAD: { code: 'CAD', symbol: 'C$', name: 'Dollar canadien (Canada)', rateToFcfa: 442.0 },
+  NGN: { code: 'NGN', symbol: '₦', name: 'Naira (Nigéria)', rateToFcfa: 0.42 },
+  GHS: { code: 'GHS', symbol: 'GH₵', name: 'Cedi (Ghana)', rateToFcfa: 39.5 },
+  ZAR: { code: 'ZAR', symbol: 'R', name: 'Rand (Afrique du Sud)', rateToFcfa: 34.2 }
 };
 
 export default function Budget() {
@@ -233,16 +233,16 @@ export default function Budget() {
       const pct = totalOut > 0 ? Math.round((val / totalOut) * 100) : 0;
       return (
         <div style={{
-          background: '#230F08',
-          border: '1.5px solid var(--border)',
+          background: '#fff',
+          border: '1px solid var(--border-strong)',
           borderRadius: '10px',
           padding: '10px 14px',
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.75)'
+          boxShadow: 'var(--shadow-md)'
         }}>
           <div style={{ fontSize: '13px', fontWeight: 700, color: data.payload.color || data.color || 'var(--gold)', marginBottom: '4px' }}>
             {data.name || data.dataKey}
           </div>
-          <div style={{ fontSize: '16px', fontWeight: 800, color: '#FAF0E6' }}>
+          <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text)' }}>
             {F(val)}
           </div>
           {totalOut > 0 && (
@@ -292,12 +292,12 @@ export default function Budget() {
 
         <div className="card" style={{ padding: '18px 20px', margin: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-            <PiggyBank size={16} color="var(--olive)" />
+            <PiggyBank size={16} color="var(--olive-text)" />
             <span className="mut" style={{ textTransform: 'uppercase', fontSize: '11px', fontWeight: 700, letterSpacing: '0.5px' }}>
               Solde Disponible
             </span>
           </div>
-          <div className="big" style={{ fontSize: '23px', marginTop: '2px', color: balance >= 0 ? 'var(--olive)' : 'var(--bad)' }}>
+          <div className="big" style={{ fontSize: '23px', marginTop: '2px', color: balance >= 0 ? 'var(--olive-text)' : 'var(--bad)' }}>
             {F(balance)}
           </div>
           <div className="mut" style={{ fontSize: '12px' }}>
@@ -381,7 +381,7 @@ export default function Budget() {
                       dataKey="value"
                     >
                       {pieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} stroke="#230F08" strokeWidth={3} />
+                        <Cell key={`cell-${index}`} fill={entry.color} stroke="#fff" strokeWidth={2} />
                       ))}
                     </Pie>
                     <Tooltip content={<CustomTooltip />} />
@@ -391,8 +391,8 @@ export default function Budget() {
                     <XAxis dataKey="name" stroke="var(--text-muted)" fontSize={12} tickLine={false} />
                     <YAxis stroke="var(--text-muted)" fontSize={11} tickFormatter={v => `${v / 1000}k`} tickLine={false} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="Réel" fill="#943C1A" radius={[6, 6, 0, 0]} />
-                    <Bar dataKey="Prévu" fill="#6E3C19" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="Réel" fill="#934C1A" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="Prévu" fill="#C9A27F" radius={[4, 4, 0, 0]} />
                     <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px', color: 'var(--text-secondary)' }} />
                   </BarChart>
                 )}
@@ -483,7 +483,7 @@ export default function Budget() {
       {/* ========================================================
           OUTIL DE CONVERSION DE DEVISES INTÉGRÉ
           ======================================================== */}
-      <div className="card" style={{ padding: '24px', marginBottom: '22px', background: 'linear-gradient(135deg, var(--card) 60%, var(--card-alt) 100%)' }}>
+      <div className="card" style={{ padding: '24px', marginBottom: '22px', background: 'var(--card)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
@@ -508,14 +508,14 @@ export default function Budget() {
 
         {/* Panneau d'ajustement des taux si activé */}
         {showRateEditor && (
-          <div style={{ background: '#1A0B06', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', marginBottom: '16px' }}>
+          <div style={{ background: 'var(--card-subtle)', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', marginBottom: '16px' }}>
             <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--gold)', marginBottom: '10px' }}>
               Taux de change appliqués (1 unité = X Franc CFA)
             </div>
             <div className="grid-3" style={{ gap: '10px' }}>
               {Object.keys(customRates).filter(k => k !== 'XAF').map(code => (
                 <div key={code} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--card-subtle)', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: '12.5px', fontWeight: 600 }}>{customRates[code].flag} 1 {code} =</span>
+                  <span style={{ fontSize: '12.5px', fontWeight: 600 }}>1 {code} =</span>
                   <input
                     type="number"
                     step="0.01"
@@ -573,7 +573,7 @@ export default function Budget() {
                     style={{ margin: 0, width: '130px', fontWeight: 700 }}
                   >
                     {Object.keys(customRates).map(c => (
-                      <option key={c} value={c}>{customRates[c].flag} {c}</option>
+                      <option key={c} value={c}>{c}</option>
                     ))}
                   </select>
                 </div>
@@ -601,7 +601,7 @@ export default function Budget() {
                   style={{ margin: 0, fontWeight: 700 }}
                 >
                   {Object.keys(customRates).map(c => (
-                    <option key={c} value={c}>{customRates[c].flag} {customRates[c].name}</option>
+                    <option key={c} value={c}>{customRates[c].name}</option>
                   ))}
                 </select>
               </div>
@@ -624,11 +624,10 @@ export default function Budget() {
                 </div>
                 <div style={{
                   fontSize: '28px',
-                  fontWeight: 800,
-                  color: 'var(--gold)',
+                  fontWeight: 700,
+                  color: 'var(--accent)',
                   fontFamily: '"Bricolage Grotesque", sans-serif',
-                  margin: '4px 0',
-                  textShadow: '0 0 16px rgba(187, 129, 48, 0.3)'
+                  margin: '4px 0'
                 }}>
                   {convertedResult.toLocaleString('fr-FR', { maximumFractionDigits: toCurr === 'XAF' ? 0 : 2 })} {customRates[toCurr]?.symbol}
                 </div>
@@ -664,7 +663,7 @@ export default function Budget() {
                   marginTop: '10px',
                   padding: '6px 10px',
                   background: 'var(--olive-light)',
-                  color: 'var(--olive)',
+                  color: 'var(--olive-text)',
                   borderRadius: 'var(--radius-sm)',
                   fontSize: '12px',
                   fontWeight: 700,
@@ -681,7 +680,7 @@ export default function Budget() {
           {/* Répères rapides (Cheat Sheet voyageur pour la devise active) */}
           <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-light)' }}>
             <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '8px' }}>
-              💡 Repères rapides pour {customRates[fromCurr]?.name} vers le Franc CFA :
+              Repères rapides pour {customRates[fromCurr]?.name} vers le Franc CFA :
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {getCheatSheetSteps().map(val => {
@@ -696,9 +695,9 @@ export default function Budget() {
                       padding: '4px 10px',
                       fontSize: '12px',
                       minHeight: 'auto',
-                      background: convAmount === String(val) ? 'var(--gold)' : 'var(--card-subtle)',
-                      color: convAmount === String(val) ? '#110703' : 'var(--text)',
-                      borderColor: convAmount === String(val) ? 'var(--gold)' : 'var(--border)'
+                      background: convAmount === String(val) ? 'var(--accent-light)' : 'var(--card)',
+                      color: convAmount === String(val) ? 'var(--accent)' : 'var(--text)',
+                      borderColor: convAmount === String(val) ? 'var(--accent)' : 'var(--border-strong)'
                     }}
                   >
                     <b>{val.toLocaleString('fr-FR')} {customRates[fromCurr]?.symbol}</b> = {converted.toLocaleString('fr-FR')} F
@@ -860,7 +859,7 @@ export default function Budget() {
                         fontSize: '11px',
                         padding: '2px 8px',
                         background: isExpense ? meta.bg : 'var(--olive-light)',
-                        color: isExpense ? meta.color : 'var(--olive)',
+                        color: isExpense ? meta.color : 'var(--olive-text)',
                         borderColor: 'transparent',
                         fontWeight: 700
                       }}
@@ -882,7 +881,7 @@ export default function Budget() {
                       style={{
                         fontWeight: 800,
                         fontSize: '14px',
-                        color: isExpense ? 'var(--accent)' : 'var(--olive)',
+                        color: isExpense ? 'var(--accent)' : 'var(--olive-text)',
                         fontVariantNumeric: 'tabular-nums'
                       }}
                     >

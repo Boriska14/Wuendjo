@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp, F, STATUS_MAP } from '../ctx.js';
 import { mk } from '../data.js';
-import { Users, User, Calendar, MapPin, Plus, CheckCircle2, ArrowRight, History as HistoryIcon } from 'lucide-react';
+import { Users, User, Calendar, MapPin, Plus, X, CheckCircle2, ArrowRight, History as HistoryIcon } from 'lucide-react';
 
 export default function History() {
   const { S, upd, go } = useApp();
@@ -66,7 +66,7 @@ export default function History() {
 
   return (
     <div>
-      <div className="card card-hero">
+      <div className="card card-hero dark-scope">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
@@ -164,13 +164,13 @@ export default function History() {
               key={trip.id || trip.originalIdx}
               className="card"
               style={{
-                border: isCurrent ? '2px solid var(--gold)' : '1px solid var(--border)',
+                border: isCurrent ? '1px solid var(--accent)' : '1px solid var(--border)',
                 position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 padding: '24px',
-                boxShadow: isCurrent ? '0 4px 20px rgba(187, 129, 48, 0.22)' : 'var(--shadow-sm)'
+                boxShadow: 'none'
               }}
             >
               <div>
@@ -187,12 +187,12 @@ export default function History() {
 
                   {isCurrent && (
                     <span className="pill primary" style={{ fontSize: '11px' }}>
-                      ★ Voyage Actuel
+                      Voyage actuel
                     </span>
                   )}
                 </div>
 
-                <h3 style={{ fontSize: '18px', margin: '0 0 6px', color: '#FFF6EE' }}>
+                <h3 style={{ fontSize: '18px', margin: '0 0 6px', color: 'var(--text)' }}>
                   {trip.name}
                 </h3>
 
@@ -214,16 +214,16 @@ export default function History() {
                 <div style={{ background: 'var(--card-alt)', padding: '12px 14px', borderRadius: 'var(--radius-md)', marginBottom: '14px', border: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', marginBottom: '4px' }}>
                     <span className="mut">Budget {isSolo ? 'personnel' : 'du groupe'} :</span>
-                    <b style={{ color: '#FFF6EE' }}>{F(totalBudget)}</b>
+                    <b style={{ color: 'var(--text)' }}>{F(totalBudget)}</b>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px' }}>
                     <span className="mut">Dépenses engagées :</span>
-                    <b style={{ color: spent > 0 ? 'var(--gold)' : '#FFF6EE' }}>{F(spent)}</b>
+                    <b style={{ color: spent > 0 ? 'var(--gold)' : 'var(--text)' }}>{F(spent)}</b>
                   </div>
                   {!isSolo && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', marginTop: '4px' }}>
                       <span className="mut">Participants validés :</span>
-                      <b style={{ color: '#FFF6EE' }}>{peopleCount} / {trip.cap} pers.</b>
+                      <b style={{ color: 'var(--text)' }}>{peopleCount} / {trip.cap} pers.</b>
                     </div>
                   )}
                 </div>
@@ -235,7 +235,7 @@ export default function History() {
                   onClick={() => markCompleted(trip.originalIdx)}
                   title="Basculer le statut terminé / en cours"
                 >
-                  <CheckCircle2 size={13} color={trip.status === 'completed' ? 'var(--olive)' : 'var(--text-muted)'} />
+                  <CheckCircle2 size={13} color={trip.status === 'completed' ? 'var(--olive-text)' : 'var(--text-muted)'} />
                   {trip.status === 'completed' ? 'Marqué terminé' : 'Terminer'}
                 </button>
 
@@ -260,7 +260,7 @@ export default function History() {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h2 style={{ margin: 0 }}>Créer un nouveau voyage</h2>
-              <button className="subtle sm" onClick={() => setShowCreateModal(false)} style={{ border: 'none' }}>✕</button>
+              <button className="subtle sm" onClick={() => setShowCreateModal(false)} style={{ border: 'none' }} aria-label="Fermer"><X size={16} /></button>
             </div>
 
             <p className="mut" style={{ marginTop: 0 }}>
@@ -279,7 +279,7 @@ export default function History() {
                   cursor: 'pointer'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#FFF6EE' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: 'var(--text)' }}>
                   <Users size={16} color="var(--gold)" /> Voyage en Groupe
                 </div>
                 <div className="mut" style={{ fontSize: '12px', marginTop: '4px' }}>
@@ -297,7 +297,7 @@ export default function History() {
                   cursor: 'pointer'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#FFF6EE' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: 'var(--text)' }}>
                   <User size={16} color="var(--gold)" /> Voyage en Solo
                 </div>
                 <div className="mut" style={{ fontSize: '12px', marginTop: '4px' }}>
