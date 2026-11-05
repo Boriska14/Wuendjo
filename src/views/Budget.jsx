@@ -30,8 +30,11 @@ import {
   Globe,
   Calculator,
   Check,
-  CheckCircle2
+  CheckCircle2,
+  Lock,
+  ClipboardList
 } from 'lucide-react';
+import { DeleteBtn } from '../ui.jsx';
 
 const CATEGORY_META = {
   'Transport': { label: 'Transport', color: '#A7795E', icon: Plane, bg: '#F2E8E0' },
@@ -72,6 +75,33 @@ export default function Budget() {
   const [customRates, setCustomRates] = useState(INITIAL_RATES);
   const [showRateEditor, setShowRateEditor] = useState(false);
   const [lastConvertedExpense, setLastConvertedExpense] = useState(null);
+
+  // Budget prévisionnel : édité par l'organisateur, visible des seuls participants validés
+  const [fcLabel, setFcLabel] = useState('');
+  const [fcAmount, setFcAmount] = useState('');
+  const [fcCat, setFcCat] = useState('Transport');
+  const forecast = t.forecast || [];
+  const forecastTotal = forecast.reduce((a, x) => a + (Number(x.a) || 0), 0);
+  const canSeeForecast = org || me?.st === 'ok';
+  const nbValidated = Math.max(1, (t.people || []).filter(p => p.st === 'ok').length);
+  const editForecast = (id, patch) => upd(s => {
+    const x = (cur(s).forecast || []).find(r => r.id === id);
+    if (x) Object.assign(x, patch);
+  });
+  const addForecast = () => {
+    const a = Number(fcAmount);
+    if (!fcLabel.trim() || !(a >= 0) || fcAmount === '') return;
+    upd(s => {
+      const trip = cur(s);
+      if (!trip.forecast) trip.forecast = [];
+      trip.forecast.push({ id: 'f' + Date.now(), cat: fcCat, l: fcLabel.trim(), a });
+    });
+    setFcLabel(''); setFcAmount('');
+  };
+  const removeForecast = id => upd(s => {
+    const trip = cur(s);
+    trip.forecast = (trip.forecast || []).filter(r => r.id !== id);
+  });
 
   const isSolo = t.mode === 'solo';
   const ledger = t.ledger || [];
@@ -322,6 +352,71 @@ export default function Budget() {
           </div>
         </div>
       </div>
+
+      {/* BUDGET PRÉVISIONNEL : réservé à l'organisateur et aux participants validés */}
+      {!isSolo && !canSeeForecast && (
+        <div className="card" style={{ padding: '22px', marginBottom: '22px', textAlign: 'center' }}>
+          <h2 style={{ justifyContent: 'center', margin: '0 0 6px', fontSize: '18px' }}>
+            <Lock size={16} /> Budget prévisionnel
+          </h2>
+          <p className="mut" style={{ margin: 0, fontSize: '13.5px' }}>
+            Il sera visible dès que l’organisateur aura validé votre inscription.
+          </p>
+        </div>
+      )}
+
+      {canSeeForecast && (org || forecast.length > 0) && (
+        <div className="card" style={{ padding: '24px', marginBottom: '22px' }}>
+          <h2 style={{ margin: '0 0 4px', fontSize: '20px' }}>
+            <ClipboardList size={18} color="var(--gold)" /> Budget prévisionnel
+          </h2>
+          <p className="mut" style={{ margin: '0 0 14px', fontSize: '13px' }}>
+            {org
+              ? 'Planifiez les dépenses à venir. Seuls vous et les participants validés le voient.'
+              : 'Estimation des dépenses prévues pour le séjour.'}
+          </p>
+
+          {forecast.length === 0 && <p className="mut">Aucune ligne prévisionnelle pour l’instant.</p>}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {forecast.map(r => (
+              org ? (
+                <div key={r.id} className="fc-row" style={{ display: 'grid', gridTemplateColumns: '130px 1fr 130px auto', gap: '8px', alignItems: 'center' }}>
+                  <select value={r.cat} onChange={e => editForecast(r.id, { cat: e.target.value })} style={{ margin: 0 }}>
+                    {Object.keys(CATEGORY_META).map(c => <option key={c} value={c}>{CATEGORY_META[c].label}</option>)}
+                  </select>
+                  <input value={r.l} onChange={e => editForecast(r.id, { l: e.target.value })} style={{ margin: 0 }} />
+                  <input type="number" min="0" value={r.a} onChange={e => editForecast(r.id, { a: Math.max(0, +e.target.value || 0) })} style={{ margin: 0 }} />
+                  <DeleteBtn onConfirm={() => removeForecast(r.id)} label="Supprimer la ligne" />
+                </div>
+              ) : (
+                <div key={r.id} style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', padding: '10px 12px', background: 'var(--card-subtle)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+                  <span><span className="pill outline" style={{ fontSize: '11px', marginRight: '8px' }}>{CATEGORY_META[r.cat]?.label || r.cat}</span>{r.l}</span>
+                  <strong style={{ whiteSpace: 'nowrap' }}>{F(r.a)}</strong>
+                </div>
+              )
+            ))}
+          </div>
+
+          {org && (
+            <div className="fc-row" style={{ display: 'grid', gridTemplateColumns: '130px 1fr 130px auto', gap: '8px', marginTop: '12px', alignItems: 'center' }}>
+              <select value={fcCat} onChange={e => setFcCat(e.target.value)} style={{ margin: 0 }}>
+                {Object.keys(CATEGORY_META).map(c => <option key={c} value={c}>{CATEGORY_META[c].label}</option>)}
+              </select>
+              <input value={fcLabel} onChange={e => setFcLabel(e.target.value)} placeholder="Ligne prévue (ex : Sono pour la veillée)" style={{ margin: 0 }} />
+              <input type="number" min="0" value={fcAmount} onChange={e => setFcAmount(e.target.value)} placeholder="Montant" style={{ margin: 0 }} />
+              <button className="accent sm" onClick={addForecast}><Plus size={14} /> Ajouter</button>
+            </div>
+          )}
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '18px', justifyContent: 'space-between', marginTop: '16px', paddingTop: '14px', borderTop: '1px solid var(--border-light)' }}>
+            <div><div className="mut" style={{ fontSize: '11px', textTransform: 'uppercase' }}>Total prévu</div><div className="big" style={{ fontSize: '20px' }}>{F(forecastTotal)}</div></div>
+            {!isSolo && <div><div className="mut" style={{ fontSize: '11px', textTransform: 'uppercase' }}>Par participant validé ({nbValidated})</div><div className="big" style={{ fontSize: '20px' }}>{F(forecastTotal / nbValidated)}</div></div>}
+            <div><div className="mut" style={{ fontSize: '11px', textTransform: 'uppercase' }}>Déjà dépensé</div><div className="big" style={{ fontSize: '20px' }}>{F(totalOut)}</div></div>
+            <div><div className="mut" style={{ fontSize: '11px', textTransform: 'uppercase' }}>Reste à prévoir</div><div className="big" style={{ fontSize: '20px', color: forecastTotal - totalOut >= 0 ? 'var(--olive-text)' : 'var(--bad)' }}>{F(forecastTotal - totalOut)}</div></div>
+          </div>
+        </div>
+      )}
 
       {/* SECTION GRAPHIQUE RECHARTS : RÉPARTITION PAR CATÉGORIES */}
       <div className="card" style={{ padding: '26px', marginBottom: '22px' }}>

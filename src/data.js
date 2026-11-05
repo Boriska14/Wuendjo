@@ -33,6 +33,27 @@ export const DAYS = [
   }
 ];
 
+// Équipes et jeux par défaut (modifiables par l'organisateur). Aucune solution ici : l'espace participant les affiche.
+export const DEFAULT_TEAMS = [
+  { id: 'A', name: 'Les Aigles Bamiléké', size: 4 },
+  { id: 'B', name: 'Les Lions de la Lobé', size: 4 }
+];
+
+export const DEFAULT_GAMES = [
+  { id: 'g1', day: 'Jour 1', title: 'Naissance des clans', dur: '25-30 min', pts: 20, desc: 'Chaque équipe choisit un nom, un cri de ralliement et un symbole, répartit les rôles et se présente en 60 secondes.' },
+  { id: 'g2', day: 'Jour 1', title: 'La publicité de l’objet impossible', dur: '30 min + 2 min', pts: 30, desc: 'Transformer un objet banal en invention extraordinaire : nom, trois fonctions, slogan et démonstration de 90 à 120 secondes.' },
+  { id: 'g3', day: 'Jour 1', title: 'Le musée vivant', dur: '20 min', pts: 15, desc: 'Une statue humaine immobile à faire deviner à l’équipe adverse : lieu, invention ou scène.' },
+  { id: 'g4', day: 'Jour 1-2', title: 'Bana insolite : défi photo', dur: '25-40 min', pts: 30, desc: 'Raconter une mini-histoire en trois photos, dans une zone autorisée et dans le respect des personnes.' },
+  { id: 'g5', day: 'Jour 2', title: 'L’enquête des sept indices', dur: '25-35 min', pts: 20, desc: 'Identifier l’objet mystère en croisant sept indices et en justifiant son raisonnement.' },
+  { id: 'g6', day: 'Jour 2', title: 'Le quiz inversé', dur: '20-25 min', pts: 15, desc: 'Inventer des questions dont les réponses sont imposées, puis répondre à celles de l’autre équipe.' },
+  { id: 'g7', day: 'Jour 2', title: 'Le tribunal des idées absurdes', dur: '25 min', pts: 25, desc: 'Défendre avec humour une idée improbable en construisant un argumentaire.' },
+  { id: 'g8', day: 'Jour 3', title: 'Reporter express', dur: '20-30 min', pts: 25, desc: 'Réaliser un mini-reportage sur une découverte, un paysage ou un moment du séjour.' },
+  { id: 'g9', day: 'Jour 3', title: 'Relais des talents', dur: '20-30 min', pts: 20, desc: 'Faire découvrir un talent ou une compétence de chaque membre de l’équipe.' },
+  { id: 'g10', day: 'Jour 3', title: 'Sculpture éphémère', dur: '20 min + 3 min', pts: 20, desc: 'Créer une œuvre collective avec des éléments naturels déjà tombés, sans dégrader le site.' },
+  { id: 'g11', day: 'Jour 4', title: 'La mission secrète d’entraide', dur: '½ journée', pts: 15, desc: 'Une action utile et discrète par personne au bénéfice du groupe.' },
+  { id: 'g12', day: 'Jour 4', title: 'Puzzle des quatre clés et coffre final', dur: '30-40 min', pts: 30, desc: 'Assembler les quatre clés et résoudre le message final, qui exige la coopération des deux équipes.' }
+];
+
 export const SUGGESTIONS = [
   {
     id: 'sug-kribi-chutes',
@@ -188,6 +209,15 @@ export const mk = (name, dest, mode = 'group', status = 'active') => ({
     nourriture: 160000,
     activites: 140000
   },
+  teams: DEFAULT_TEAMS.map(x => ({ ...x })),
+  games: DEFAULT_GAMES.map(x => ({ ...x })),
+  forecast: [
+    { id: 'f1', cat: 'Transport', l: 'Minibus + carburant', a: 130000 },
+    { id: 'f2', cat: 'Hébergement', l: 'Chalets bord de mer', a: 260000 },
+    { id: 'f3', cat: 'Nourriture', l: 'Repas et vivres du séjour', a: 150000 },
+    { id: 'f4', cat: 'Activités', l: 'Pirogue, guides, entrées', a: 120000 },
+    { id: 'f5', cat: 'Autre', l: 'Imprévus (≈10 %)', a: 60000 }
+  ],
   scores: [
     { team: 'A', pts: 45, why: 'Énigme de la chefferie résolue' },
     { team: 'B', pts: 40, why: 'Épreuve des épices réussie' },

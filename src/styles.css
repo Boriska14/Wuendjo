@@ -1073,3 +1073,5 @@ button.accent, button { letter-spacing: 0; }
 .wf-step.done .wf-title { color: var(--text-secondary); }
 .wf-desc { font-size: 13px; }
 @media (max-width: 600px) { .wf-step { flex-wrap: wrap; } .wf-step button { margin-left: 42px; } }
+
+@media (max-width: 700px) { .fc-row { grid-template-columns: 1fr 1fr !important; } .fc-row > :nth-child(2) { grid-column: 1 / -1; order: -1; } }

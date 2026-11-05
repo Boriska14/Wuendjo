@@ -1,11 +1,12 @@
 import React from 'react';
 import { useApp, useForm, cur } from '../ctx.js';
-import { DAYS } from '../data.js';
-import { Trophy, Key, Plus, Check, Shield, Compass } from 'lucide-react';
+import { DAYS, DEFAULT_TEAMS, DEFAULT_GAMES } from '../data.js';
+import { Trophy, Key, Plus, Check, Shield, Compass, Users, Swords } from 'lucide-react';
+import { DeleteBtn } from '../ui.jsx';
 
 export default function Games() {
   const { t, org, upd, go } = useApp();
-  const [f, b, reset] = useForm({ tm: 'A' });
+  const [f, b, reset] = useForm({ tm: 'A', gd: 'Jour 1' });
 
   const isSolo = t.mode === 'solo';
 
@@ -80,8 +81,43 @@ export default function Games() {
   }
 
   // Si voyage en groupe : Le Grand Jeu des 4 Clés
-  const scoreTeamA = (t.scores || []).filter(s => s.team === 'A').reduce((a, s) => a + s.pts, 0);
-  const scoreTeamB = (t.scores || []).filter(s => s.team === 'B').reduce((a, s) => a + s.pts, 0);
+  const teams = t.teams && t.teams.length ? t.teams : DEFAULT_TEAMS;
+  const games = t.games || DEFAULT_GAMES;
+  const teamScore = id => (t.scores || []).filter(s => s.team === id).reduce((a, s) => a + s.pts, 0);
+
+  // Écritures : on matérialise les valeurs par défaut au premier changement
+  const editTeam = (id, patch) => upd(s => {
+    const trip = cur(s);
+    if (!trip.teams) trip.teams = DEFAULT_TEAMS.map(x => ({ ...x }));
+    const tm = trip.teams.find(x => x.id === id);
+    if (tm) Object.assign(tm, patch);
+  });
+  const editGame = (id, patch) => upd(s => {
+    const trip = cur(s);
+    if (!trip.games) trip.games = DEFAULT_GAMES.map(x => ({ ...x }));
+    const g = trip.games.find(x => x.id === id);
+    if (g) Object.assign(g, patch);
+  });
+  const removeGame = id => upd(s => {
+    const trip = cur(s);
+    trip.games = (trip.games || DEFAULT_GAMES).filter(x => x.id !== id);
+  });
+  const addGame = () => {
+    if (!(f.gn || '').trim()) return;
+    upd(s => {
+      const trip = cur(s);
+      if (!trip.games) trip.games = DEFAULT_GAMES.map(x => ({ ...x }));
+      trip.games.push({
+        id: 'g' + Date.now(),
+        day: f.gd || 'Jour 1',
+        title: f.gn.trim(),
+        dur: f.gu || '',
+        pts: +f.gp || 0,
+        desc: f.gx || ''
+      });
+    });
+    reset();
+  };
 
   const toggleChallenge = (key) => {
     upd(s => {
@@ -97,7 +133,7 @@ export default function Games() {
       const trip = cur(s);
       if (!trip.scores) trip.scores = [];
       trip.scores.push({
-        team: f.tm || 'A',
+        team: f.tm || teams[0].id,
         pts: +f.pt,
         why: f.ws || 'Épreuve validée'
       });
@@ -132,25 +168,21 @@ export default function Games() {
 
       {/* Tableau des scores des équipes */}
       <div className="grid-2" style={{ marginBottom: '22px' }}>
-        <div className="card" style={{ border: '1.5px solid var(--border-gold)', background: 'var(--card)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div className="mut" style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Clan A</div>
-              <h2 style={{ margin: '2px 0 0', color: 'var(--gold)' }}>Les Aigles Bamiléké</h2>
+        {teams.map((tm, i) => (
+          <div key={tm.id} className="card" style={{ border: i === 0 ? '1.5px solid var(--border-gold)' : '1px solid var(--border)', background: 'var(--card)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
+              <div style={{ minWidth: 0 }}>
+                <div className="mut" style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Équipe {i + 1} · {tm.size} joueur{tm.size > 1 ? 's' : ''}
+                </div>
+                <h2 style={{ margin: '2px 0 0', color: i === 0 ? 'var(--gold)' : 'var(--accent)' }}>{tm.name}</h2>
+              </div>
+              <div className={`big ${i === 0 ? '' : 'accent'}`} style={{ fontSize: '32px', color: i === 0 ? 'var(--gold)' : undefined, whiteSpace: 'nowrap' }}>
+                {teamScore(tm.id)} pts
+              </div>
             </div>
-            <div className="big" style={{ fontSize: '32px', color: 'var(--gold)' }}>{scoreTeamA} pts</div>
           </div>
-        </div>
-
-        <div className="card" style={{ border: '1px solid var(--border)', background: 'var(--card)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div className="mut" style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Clan B</div>
-              <h2 style={{ margin: '2px 0 0', color: 'var(--accent)' }}>Les Lions de la Lobé</h2>
-            </div>
-            <div className="big accent" style={{ fontSize: '32px' }}>{scoreTeamB} pts</div>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Les 4 étapes / 4 Clés */}
@@ -234,8 +266,7 @@ export default function Games() {
                 <div>
                   <label>Équipe</label>
                   <select {...b('tm')}>
-                    <option value="A">Clan A (Aigles)</option>
-                    <option value="B">Clan B (Lions)</option>
+                    {teams.map(tm => <option key={tm.id} value={tm.id}>{tm.name}</option>)}
                   </select>
                 </div>
                 <div>
@@ -251,6 +282,80 @@ export default function Games() {
             </div>
           )}
         </div>
+      </div>
+      {/* Équipes : description + édition organisateur */}
+      <div className="card" style={{ marginTop: '22px' }}>
+        <h2><Users size={18} color="var(--gold)" /> Les équipes</h2>
+        <div className="grid-2" style={{ marginTop: '12px' }}>
+          {teams.map((tm, i) => (
+            <div key={tm.id} style={{ padding: '14px', borderRadius: 'var(--radius-md)', background: 'var(--card-subtle)', border: '1px solid var(--border)' }}>
+              {org ? (
+                <>
+                  <label>Nom de l’équipe {i + 1}</label>
+                  <input value={tm.name} onChange={e => editTeam(tm.id, { name: e.target.value })} />
+                  <label>Effectif</label>
+                  <input type="number" min="1" value={tm.size} onChange={e => editTeam(tm.id, { size: Math.max(1, parseInt(e.target.value, 10) || 1) })} />
+                </>
+              ) : (
+                <>
+                  <div style={{ fontWeight: 700 }}>{tm.name}</div>
+                  <div className="mut" style={{ fontSize: '13px' }}>{tm.size} joueur{tm.size > 1 ? 's' : ''}</div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Jeux : description + édition organisateur */}
+      <div className="card">
+        <h2><Swords size={18} color="var(--gold)" /> Les jeux ({games.length})</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '12px' }}>
+          {games.length === 0 && <p className="mut">Aucun jeu pour l’instant.</p>}
+          {games.map(g => (
+            <div key={g.id} style={{ padding: '14px', borderRadius: 'var(--radius-md)', background: 'var(--card-subtle)', border: '1px solid var(--border)' }}>
+              {org ? (
+                <>
+                  <div className="grid-2">
+                    <div><label>Titre</label><input value={g.title} onChange={e => editGame(g.id, { title: e.target.value })} /></div>
+                    <div><label>Jour</label><input value={g.day} onChange={e => editGame(g.id, { day: e.target.value })} /></div>
+                    <div><label>Durée</label><input value={g.dur} onChange={e => editGame(g.id, { dur: e.target.value })} /></div>
+                    <div><label>Points max</label><input type="number" value={g.pts} onChange={e => editGame(g.id, { pts: +e.target.value || 0 })} /></div>
+                  </div>
+                  <label>Description</label>
+                  <textarea rows={2} value={g.desc} onChange={e => editGame(g.id, { desc: e.target.value })} />
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <DeleteBtn onConfirm={() => removeGame(g.id)} label="Retirer ce jeu" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '4px' }}>
+                    <span className="pill primary" style={{ fontSize: '11px' }}>{g.day}</span>
+                    {g.dur && <span className="pill outline" style={{ fontSize: '11px' }}>{g.dur}</span>}
+                    <span className="pill ok" style={{ fontSize: '11px' }}>{g.pts} pts</span>
+                  </div>
+                  <div style={{ fontWeight: 700 }}>{g.title}</div>
+                  <p className="mut" style={{ margin: '4px 0 0', fontSize: '13.5px' }}>{g.desc}</p>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {org && (
+          <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid var(--border-light)' }}>
+            <label>Ajouter un jeu</label>
+            <div className="grid-2">
+              <input {...b('gn')} placeholder="Titre du jeu" />
+              <input {...b('gd')} placeholder="Jour (ex : Jour 2)" />
+              <input {...b('gu')} placeholder="Durée (ex : 20 min)" />
+              <input type="number" {...b('gp')} placeholder="Points max" />
+            </div>
+            <textarea rows={2} {...b('gx')} placeholder="Description du jeu" />
+            <button className="accent sm" onClick={addGame}><Plus size={14} /> Ajouter le jeu</button>
+          </div>
+        )}
       </div>
     </div>
   );
