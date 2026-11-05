@@ -154,6 +154,9 @@ export const mk = (name, dest, mode = 'group', status = 'active') => ({
       { id: 'p4', name: 'Aminata', age: 27, job: 'Médecin', phone: '+221 77 33 33', type: 'Explorateur serein', diet: 'Halal', why: 'Me ressourcer en pleine nature', st: 'wait', plan: '' }
     ])
   ],
+  declined: mode === 'solo' ? [] : [
+    { id: 'd1', name: 'Kévin M.', date: '04 Août', why: 'Déplacement professionnel à ces dates, amusez-vous bien !' }
+  ],
   itinerary: [
     { day: 'Jour 1', time: '09:00', title: 'Départ & Arrivée sur site', desc: 'Installation dans les hébergements et accueil traditionnel.' },
     { day: 'Jour 2', time: '10:30', title: 'Randonnée & Clé de la Découverte', desc: 'Exploration guidée des sentiers et initiation artisanale.' },

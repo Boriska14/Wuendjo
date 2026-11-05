@@ -39,21 +39,47 @@ const V = {
 };
 
 const load = () => {
+  let state = null;
   try {
     const x = localStorage.getItem('wuendjo_v2');
     if (x) {
       const parsed = JSON.parse(x);
       if (parsed && Array.isArray(parsed.trips) && parsed.trips.length > 0) {
-        return parsed;
+        state = parsed;
       }
     }
   } catch {}
-  return {
-    role: 'o',
-    tab: 'home',
-    t: 0,
-    trips: seed()
-  };
+
+  if (!state) {
+    state = {
+      role: 'o',
+      tab: 'home',
+      t: 0,
+      trips: seed()
+    };
+  }
+
+  // Traitement des liens partagés (?t=0&invite=1)
+  try {
+    if (typeof window !== 'undefined' && window.location) {
+      const params = new URLSearchParams(window.location.search);
+      const tripParam = params.get('trip') || params.get('t');
+      const inviteParam = params.get('invite');
+      if (tripParam !== null && !isNaN(Number(tripParam))) {
+        const idx = parseInt(tripParam, 10);
+        if (idx >= 0 && idx < state.trips.length) {
+          state.t = idx;
+          state.tab = 'home';
+        }
+      }
+      if (inviteParam === '1') {
+        state.role = 'p'; // Vue invité pour les amis qui ouvrent le lien
+        state.tab = 'home';
+      }
+    }
+  } catch {}
+
+  return state;
 };
 
 export default function App() {
@@ -117,7 +143,7 @@ export default function App() {
             <div className="header-controls">
               {/* Sélecteur de voyage */}
               <div className="trip-select-box">
-                <Compass size={16} color="var(--accent)" style={{ marginLeft: '4px' }} />
+                <Compass size={16} color="var(--gold)" style={{ marginLeft: '4px' }} />
                 <select
                   value={S.t}
                   onChange={e => upd(s => { s.t = +e.target.value; s.tab = 'home'; })}
@@ -130,13 +156,13 @@ export default function App() {
                     maxWidth: '220px',
                     background: 'transparent',
                     border: 'none',
-                    color: 'var(--primary)',
+                    color: 'var(--text)',
                     minHeight: 'auto',
                     boxShadow: 'none'
                   }}
                 >
                   {(S.trips || []).map((x, i) => (
-                    <option key={i} value={i}>
+                    <option key={i} value={i} style={{ background: '#230F08', color: '#FAF0E6' }}>
                       {x.name} ({x.mode === 'solo' ? 'Solo' : 'Groupe'})
                     </option>
                   ))}

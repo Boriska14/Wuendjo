@@ -58,7 +58,7 @@ export default function Ideas() {
       </div>
 
       <div style={{ display: 'flex', gap: '8px', marginBottom: '22px', flexWrap: 'wrap', alignItems: 'center' }}>
-        <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--primary)', marginRight: '6px' }}>Catégorie :</span>
+        <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--gold)', marginRight: '6px' }}>Catégorie :</span>
         <button
           className={categoryFilter === 'all' ? 'accent sm' : 'subtle sm'}
           onClick={() => setCategoryFilter('all')}
@@ -84,7 +84,7 @@ export default function Ideas() {
           <Utensils size={13} /> Restaurants & Terroirs
         </button>
 
-        <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--primary)', marginLeft: '12px', marginRight: '6px' }}>Mode :</span>
+        <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--gold)', marginLeft: '12px', marginRight: '6px' }}>Mode :</span>
         <button
           className={modeFilter === 'all' ? 'primary sm' : 'subtle sm'}
           onClick={() => setModeFilter('all')}
@@ -120,17 +120,17 @@ export default function Ideas() {
                     {isRest ? <Utensils size={12} /> : isAct ? <Sparkles size={12} /> : <Compass size={12} />}
                     {isRest ? 'Restaurant' : isAct ? 'Activité' : 'Destination'}
                   </span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px', fontWeight: 700, color: 'var(--accent)' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px', fontWeight: 700, color: 'var(--gold)' }}>
                     <Star size={13} fill="currentColor" /> {item.rating}
                   </span>
                 </div>
 
-                <h3 style={{ fontSize: '17px', lineHeight: '1.3', marginBottom: '6px', color: 'var(--primary)' }}>
+                <h3 style={{ fontSize: '17px', lineHeight: '1.3', marginBottom: '6px', color: '#FFF6EE' }}>
                   {item.title}
                 </h3>
 
-                <div className="mut" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '12.5px', marginBottom: '10px', color: 'var(--text-muted)' }}>
-                  <MapPin size={13} color="var(--accent)" />
+                <div className="mut" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '12.5px', marginBottom: '10px' }}>
+                  <MapPin size={13} color="var(--gold)" />
                   <b>{item.location}</b> <span style={{ opacity: 0.7 }}>({item.country})</span>
                 </div>
 
@@ -139,12 +139,12 @@ export default function Ideas() {
                 </p>
 
                 {item.highlight && (
-                  <div style={{ background: 'var(--sand-light)', padding: '8px 12px', borderRadius: 'var(--radius-sm)', fontSize: '12px', color: 'var(--primary)', marginBottom: '12px', border: '1px solid var(--border-light)' }}>
+                  <div style={{ background: 'var(--card-alt)', padding: '8px 12px', borderRadius: 'var(--radius-sm)', fontSize: '12px', color: '#FFF6EE', marginBottom: '12px', border: '1px solid var(--border)' }}>
                     💡 <b>Atout :</b> {item.highlight}
                   </div>
                 )}
 
-                <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--accent)', marginBottom: '12px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--gold)', marginBottom: '12px' }}>
                   {item.cost}
                 </div>
               </div>
@@ -169,7 +169,7 @@ export default function Ideas() {
       <div className="grid-2">
         <div className="card">
           <h2>
-            <ThumbsUp size={18} color="var(--accent)" />
+            <ThumbsUp size={18} color="var(--gold)" />
             Propositions retenues pour le voyage ({(t.ideas || []).length})
           </h2>
           <p className="mut">Votez pour orienter le programme du séjour.</p>
@@ -229,7 +229,7 @@ export default function Ideas() {
 
           <div className="card">
             <h2>
-              <Camera size={18} color="var(--primary)" />
+              <Camera size={18} color="var(--gold)" />
               Souvenirs & Album photo
             </h2>
             {t.bereal ? (

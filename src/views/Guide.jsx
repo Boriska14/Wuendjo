@@ -9,7 +9,7 @@ export default function Guide() {
     <div>
       <div className="card card-hero">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <Compass size={20} color="var(--primary)" />
+          <Compass size={20} color="var(--gold)" />
           <span className="pill primary">Manuel du Maître du Jeu Wuendjo</span>
         </div>
         <h1 className="big" style={{ margin: '0 0 6px', fontSize: '26px' }}>

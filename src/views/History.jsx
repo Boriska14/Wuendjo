@@ -70,8 +70,8 @@ export default function History() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <HistoryIcon size={20} color="var(--accent)" />
-              <span className="pill accent">Historique des Carnets de Voyage</span>
+              <HistoryIcon size={20} color="var(--gold)" />
+              <span className="pill primary">Historique des Carnets de Voyage</span>
             </div>
             <h1 className="big" style={{ margin: '0 0 8px', fontSize: '28px' }}>
               Tous mes Voyages Wuendjo
@@ -88,19 +88,19 @@ export default function History() {
 
         {/* Statistiques clés */}
         <div className="grid-3" style={{ marginTop: '20px' }}>
-          <div style={{ background: 'var(--card)', padding: '16px 20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+          <div style={{ background: 'var(--card-alt)', padding: '16px 20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
             <div className="mut" style={{ fontSize: '12px', textTransform: 'uppercase' }}>Total Voyages</div>
             <div className="big" style={{ fontSize: '24px', marginTop: '2px' }}>{totalTrips}</div>
             <div className="mut" style={{ fontSize: '12px' }}>{groupTrips} en groupe · {soloTrips} en solo</div>
           </div>
 
-          <div style={{ background: 'var(--card)', padding: '16px 20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+          <div style={{ background: 'var(--card-alt)', padding: '16px 20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
             <div className="mut" style={{ fontSize: '12px', textTransform: 'uppercase' }}>Aventures Terminées</div>
             <div className="big olive" style={{ fontSize: '24px', marginTop: '2px' }}>{completedTrips}</div>
             <div className="mut" style={{ fontSize: '12px' }}>Bilan et souvenirs sauvegardés</div>
           </div>
 
-          <div style={{ background: 'var(--card)', padding: '16px 20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+          <div style={{ background: 'var(--card-alt)', padding: '16px 20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
             <div className="mut" style={{ fontSize: '12px', textTransform: 'uppercase' }}>Volume Budget Géré</div>
             <div className="big accent" style={{ fontSize: '24px', marginTop: '2px' }}>{F(totalBudgetManaged)}</div>
             <div className="mut" style={{ fontSize: '12px' }}>Sur l’ensemble des éditions</div>
@@ -110,7 +110,7 @@ export default function History() {
 
       {/* Barre de filtrage */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '22px', flexWrap: 'wrap', alignItems: 'center' }}>
-        <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--primary)', marginRight: '6px' }}>Filtrer :</span>
+        <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--gold)', marginRight: '6px' }}>Filtrer :</span>
         <button
           className={filter === 'all' ? 'accent sm' : 'subtle sm'}
           onClick={() => setFilter('all')}
@@ -164,13 +164,13 @@ export default function History() {
               key={trip.id || trip.originalIdx}
               className="card"
               style={{
-                border: isCurrent ? '2px solid var(--accent)' : '1px solid var(--border)',
+                border: isCurrent ? '2px solid var(--gold)' : '1px solid var(--border)',
                 position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 padding: '24px',
-                boxShadow: isCurrent ? '0 4px 18px rgba(200, 90, 62, 0.18)' : 'var(--shadow-sm)'
+                boxShadow: isCurrent ? '0 4px 20px rgba(187, 129, 48, 0.22)' : 'var(--shadow-sm)'
               }}
             >
               <div>
@@ -186,23 +186,23 @@ export default function History() {
                   </div>
 
                   {isCurrent && (
-                    <span className="pill accent" style={{ fontSize: '11px' }}>
+                    <span className="pill primary" style={{ fontSize: '11px' }}>
                       ★ Voyage Actuel
                     </span>
                   )}
                 </div>
 
-                <h3 style={{ fontSize: '18px', margin: '0 0 6px', color: 'var(--primary)' }}>
+                <h3 style={{ fontSize: '18px', margin: '0 0 6px', color: '#FFF6EE' }}>
                   {trip.name}
                 </h3>
 
                 <div className="mut" style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', fontSize: '13px', marginBottom: '10px' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <MapPin size={13} color="var(--accent)" />
+                    <MapPin size={13} color="var(--gold)" />
                     <b>{trip.dest}</b>
                   </span>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Calendar size={13} color="var(--primary)" />
+                    <Calendar size={13} color="var(--accent-beaver)" />
                     {trip.dates}
                   </span>
                 </div>
@@ -211,19 +211,19 @@ export default function History() {
                   {trip.description || (isSolo ? 'Voyage d’exploration en autonomie.' : 'Voyage collaboratif avec quêtes et découvertes.')}
                 </p>
 
-                <div style={{ background: 'var(--sand-light)', padding: '12px 14px', borderRadius: 'var(--radius-md)', marginBottom: '14px', border: '1px solid var(--border-light)' }}>
+                <div style={{ background: 'var(--card-alt)', padding: '12px 14px', borderRadius: 'var(--radius-md)', marginBottom: '14px', border: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', marginBottom: '4px' }}>
                     <span className="mut">Budget {isSolo ? 'personnel' : 'du groupe'} :</span>
-                    <b>{F(totalBudget)}</b>
+                    <b style={{ color: '#FFF6EE' }}>{F(totalBudget)}</b>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px' }}>
                     <span className="mut">Dépenses engagées :</span>
-                    <b style={{ color: spent > 0 ? 'var(--accent)' : 'inherit' }}>{F(spent)}</b>
+                    <b style={{ color: spent > 0 ? 'var(--gold)' : '#FFF6EE' }}>{F(spent)}</b>
                   </div>
                   {!isSolo && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', marginTop: '4px' }}>
                       <span className="mut">Participants validés :</span>
-                      <b>{peopleCount} / {trip.cap} pers.</b>
+                      <b style={{ color: '#FFF6EE' }}>{peopleCount} / {trip.cap} pers.</b>
                     </div>
                   )}
                 </div>
@@ -274,13 +274,13 @@ export default function History() {
                 style={{
                   padding: '14px',
                   borderRadius: 'var(--radius-md)',
-                  border: newTrip.mode === 'group' ? '2px solid var(--accent)' : '1px solid var(--border)',
-                  background: newTrip.mode === 'group' ? 'var(--sand-light)' : 'var(--card)',
+                  border: newTrip.mode === 'group' ? '2px solid var(--gold)' : '1px solid var(--border)',
+                  background: newTrip.mode === 'group' ? 'var(--card-alt)' : 'var(--card-subtle)',
                   cursor: 'pointer'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: 'var(--primary)' }}>
-                  <Users size={16} /> Voyage en Groupe
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#FFF6EE' }}>
+                  <Users size={16} color="var(--gold)" /> Voyage en Groupe
                 </div>
                 <div className="mut" style={{ fontSize: '12px', marginTop: '4px' }}>
                   Jeux d'équipes, validation des participants, budget collectif et trésorerie partagée.
@@ -292,13 +292,13 @@ export default function History() {
                 style={{
                   padding: '14px',
                   borderRadius: 'var(--radius-md)',
-                  border: newTrip.mode === 'solo' ? '2px solid var(--accent)' : '1px solid var(--border)',
-                  background: newTrip.mode === 'solo' ? 'var(--sand-light)' : 'var(--card)',
+                  border: newTrip.mode === 'solo' ? '2px solid var(--gold)' : '1px solid var(--border)',
+                  background: newTrip.mode === 'solo' ? 'var(--card-alt)' : 'var(--card-subtle)',
                   cursor: 'pointer'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: 'var(--primary)' }}>
-                  <User size={16} /> Voyage en Solo
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#FFF6EE' }}>
+                  <User size={16} color="var(--gold)" /> Voyage en Solo
                 </div>
                 <div className="mut" style={{ fontSize: '12px', marginTop: '4px' }}>
                   Itinéraire individuel, checklist de route, budget personnel et journal de bord.

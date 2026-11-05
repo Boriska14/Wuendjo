@@ -1,90 +1,76 @@
+/* ========================================================
+   WUENDJO — CHARTE GRAPHIQUE "TERRE & MATIÈRES"
+   Inspirée des textures naturelles : bois précieux, brique cuite,
+   terres ocres, fibres végétales et tissus artisanaux.
+   ======================================================== */
+
 :root {
-  /* 4 Couleurs Officielles Wuendjo */
-  --primary: #0D3B4E;        /* Bleu Nuit Profond / Océan */
-  --primary-dark: #08232F;
-  --primary-light: #16516A;
-  --accent: #C85A3E;         /* Terracotta / Corail Chaleureux */
-  --accent-hover: #AF4A30;
-  --accent-light: #FBEFEA;
-  --sand: #E6D7C3;           /* Sable Albâtre */
-  --sand-light: #F8F4ED;
-  --sand-dark: #D4C3AC;
-  --olive: #5A6B44;          /* Vert Forêt Olive */
-  --olive-light: #EFF4EA;
-  --olive-hover: #485735;
+  /* 1. Fonds & Neutres Sombres (Arrière-plans & Surfaces) */
+  --bg-deep: #110703;         /* Smoky black — Toile principale */
+  --bg: #110703;
+  --card: #230F08;            /* Licorice — Cartes & Panneaux */
+  --card-subtle: #29120A;     /* Teinte intermédiaire douce */
+  --card-alt: #34170D;        /* Black bean — Surfaces élevées & actives */
+  --card-hover: #2F150C;
 
-  /* Surfaces & Toile épurée */
-  --bg: #FAF8F5;
-  --card: #FFFFFF;
-  --card-subtle: #FCFAF6;
-  --card-alt: #F4EFE6;
+  /* 2. Accents Chauds, Cuivrés & Briques */
+  --accent-beaver: #A7795E;    /* Beaver doux */
+  --accent-auburn: #6E3C19;    /* Auburn profond */
+  --accent-terracotta: #7B3311;/* Terracotta / Sienne cuite */
+  --accent-rust: #943C1A;      /* Rouille cuivrée vive (CTA principal) */
+  --accent: #943C1A;
+  --accent-hover: #BB8130;     /* Survol lumineux vers l'or ambré */
+  --accent-light: rgba(148, 60, 26, 0.22);
 
-  /* Typographie & Contraste Élevé */
-  --text: #0B2533;
-  --text-secondary: #2C4755;
-  --text-muted: #536D7C;
-  --text-inverse: #FFFFFF;
+  /* 3. Lumières, Éléments de Contraste & Sélection */
+  --gold: #BB8130;             /* Ocre / Or ambré rayonnant */
+  --gold-warm: #AB6422;        /* Ambre chaleureux */
+  --gold-hover: #D49439;
+  --gold-subtle: rgba(187, 129, 48, 0.16);
+  --gold-glow: 0 0 16px rgba(187, 129, 48, 0.25);
 
-  /* Bordures fines élégantes */
-  --border: #E8DEC9;
-  --border-light: #F1E9DC;
-  --border-focus: #C85A3E;
+  /* 4. Touches Nature & Végétales Complémentaires */
+  --forest-deep: #162A22;      /* Vert forêt nocturne */
+  --forest: #2F3C29;           /* Vert mousse & sous-bois */
+  --khaki: #474E30;            /* Kaki minéral */
+  --khaki-gold: #756A34;       /* Kaki doré / Argile */
+  --olive: #474E30;
+  --olive-light: rgba(71, 78, 48, 0.28);
+  --olive-text: #D5E2C4;
 
-  /* Ombres douces & épurées */
-  --shadow-sm: 0 1px 3px rgba(13, 59, 78, 0.04);
-  --shadow-md: 0 4px 14px rgba(13, 59, 78, 0.06);
-  --shadow-lg: 0 12px 30px rgba(13, 59, 78, 0.09);
+  /* 5. Typographie & Contrastes Normes WCAG AA/AAA — Association Blanc & Couleur Principale */
+  --text: #FFFFFF;             /* Blanc pur éclatant (16:1 sur fond sombre) */
+  --text-secondary: #F4EBE2;   /* Blanc ivoire très lumineux (14:1) */
+  --text-muted: #D1BFA8;       /* Beige clair lisible (8:1) */
+  --text-inverse: #110703;     /* Pour fonds blancs ou dorés */
+  --white: #FFFFFF;
+  --white-soft: #FDFBF7;
+  --white-translucent: rgba(255, 255, 255, 0.12);
+  --white-border: rgba(255, 255, 255, 0.28);
 
-  /* Géométrie */
+  /* 6. Bordures & Lignes de Structure */
+  --border: #421D11;           /* Bordure terre de sienne fine */
+  --border-light: #32160C;     /* Séparateur subtil */
+  --border-focus: #BB8130;     /* Anneau de sélection or ambré */
+  --border-gold: rgba(187, 129, 48, 0.4);
+  --border-white: rgba(255, 255, 255, 0.25);
+
+  /* 7. Ombres Organiques */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(148, 60, 26, 0.12);
+  --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(187, 129, 48, 0.15);
+
+  /* 8. Rayons & Géométrie Épurée */
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-}
+  --radius-lg: 16px;
+  --radius-xl: 22px;
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #071B24;
-    --card: #0D2B39;
-    --card-subtle: #113444;
-    --card-alt: #143D50;
-    --text: #FAF6EF;
-    --text-secondary: #D4E3EC;
-    --text-muted: #9BB3C0;
-    --border: #1C4456;
-    --border-light: #173847;
-    --sand-light: #123342;
-    --accent-light: rgba(200, 90, 62, 0.2);
-    --olive-light: rgba(90, 107, 68, 0.25);
-  }
-}
-
-:root[data-theme="dark"] {
-  --bg: #071B24;
-  --card: #0D2B39;
-  --card-subtle: #113444;
-  --card-alt: #143D50;
-  --text: #FAF6EF;
-  --text-secondary: #D4E3EC;
-  --text-muted: #9BB3C0;
-  --border: #1C4456;
-  --border-light: #173847;
-  --sand-light: #123342;
-  --accent-light: rgba(200, 90, 62, 0.2);
-  --olive-light: rgba(90, 107, 68, 0.25);
-}
-
-:root[data-theme="light"] {
-  --bg: #FAF8F5;
-  --card: #FFFFFF;
-  --card-subtle: #FCFAF6;
-  --card-alt: #F4EFE6;
-  --text: #0B2533;
-  --text-secondary: #2C4755;
-  --text-muted: #536D7C;
-  --border: #E8DEC9;
-  --border-light: #F1E9DC;
-  --sand-light: #F8F4ED;
+  /* 9. Alias Sémantiques & Rétro-compatibilité */
+  --primary: var(--gold);
+  --primary-hover: var(--gold-hover);
+  --sand-light: #2A130A;
+  --sand: #34170D;
 }
 
 * {
@@ -94,11 +80,14 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--bg);
+  background-color: var(--bg-deep);
+  background-image: 
+    radial-gradient(ellipse at 15% 0%, rgba(110, 60, 25, 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 100%, rgba(71, 78, 48, 0.12) 0%, transparent 50%);
   color: var(--text);
   font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 15px;
-  line-height: 1.55;
+  line-height: 1.6;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -110,25 +99,37 @@ html, body {
   flex-direction: column;
 }
 
-/* Headings with Bricolage Grotesque */
+/* ========================================================
+   TYPOGRAPHIE & TITRES "TERRE & MATIÈRES"
+   ======================================================== */
 h1, h2, h3, h4, .brand-text-title, .big {
   font-family: "Bricolage Grotesque", -apple-system, sans-serif;
   letter-spacing: -0.025em;
-  color: var(--primary);
+  color: var(--text);
   font-feature-settings: "cv02", "cv03", "cv04";
 }
 
-:root[data-theme="dark"] h1,
-:root[data-theme="dark"] h2,
-:root[data-theme="dark"] h3,
-:root[data-theme="dark"] h4,
-:root[data-theme="dark"] .brand-text-title,
-:root[data-theme="dark"] .big {
-  color: #FAF6EF;
+h1 {
+  color: #FFFFFF;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  color: #FFFFFF;
+}
+
+h3 {
+  color: #FFFFFF;
+}
+
+.mut {
+  color: var(--text-muted);
+  font-size: 13.5px;
+  line-height: 1.55;
 }
 
 /* ========================================================
-   HEADER & EN-TÊTE ÉPURÉ
+   EN-TÊTE ÉLÉGANT & ZONE DE MARQUE
    ======================================================== */
 .site-header {
   background: var(--card);
@@ -136,13 +137,14 @@ h1, h2, h3, h4, .brand-text-title, .big {
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: 0 1px 3px rgba(13, 59, 78, 0.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
 }
 
 .site-header-inner {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 12px 24px;
+  padding: 14px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -157,42 +159,46 @@ h1, h2, h3, h4, .brand-text-title, .big {
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  transition: opacity 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .brand-wrap:hover {
-  opacity: 0.92;
+  opacity: 0.95;
+  transform: translateY(-1px);
 }
 
 .brand-logo-mark {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  background: linear-gradient(135deg, var(--accent-rust) 0%, var(--gold) 100%);
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 800;
-  font-size: 22px;
-  box-shadow: 0 3px 10px rgba(200, 90, 62, 0.25);
+  font-size: 24px;
+  box-shadow: 0 3px 12px rgba(148, 60, 26, 0.45);
+  border: 1px solid rgba(255, 240, 230, 0.2);
   flex-shrink: 0;
 }
 
 .brand-text-title {
-  font-size: 23px;
+  font-size: 24px;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.1;
   margin: 0;
+  color: #FFF6EE;
+  letter-spacing: -0.03em;
 }
 
 .brand-tagline {
   font-size: 11px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--gold);
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.7px;
   display: block;
 }
 
@@ -207,20 +213,25 @@ h1, h2, h3, h4, .brand-text-title, .big {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--sand-light);
+  background: var(--card-alt);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 3px 6px;
+  padding: 3px 8px;
+  transition: border-color 0.2s ease;
+}
+
+.trip-select-box:hover {
+  border-color: var(--gold);
 }
 
 /* ========================================================
-   NAVIGATION BAR
+   NAVIGATION PRINCIPALE ÉPURÉE
    ======================================================== */
 .site-nav-wrap {
-  background: var(--card);
+  background: #1A0B06;
   border-bottom: 1px solid var(--border);
   position: sticky;
-  top: 66px;
+  top: 72px;
   z-index: 40;
 }
 
@@ -254,36 +265,26 @@ h1, h2, h3, h4, .brand-text-title, .big {
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all 0.16s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   border-radius: 0;
   min-height: 48px;
 }
 
 .nav-item-btn:hover {
-  color: var(--primary);
-  background: rgba(230, 215, 195, 0.2);
+  color: #FFF6EE;
+  background: rgba(187, 129, 48, 0.08);
 }
 
 .nav-item-btn.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-  background: rgba(200, 90, 62, 0.06);
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  background: rgba(187, 129, 48, 0.12);
   font-weight: 700;
-}
-
-:root[data-theme="dark"] .nav-item-btn:hover {
-  color: #FAF6EF;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-:root[data-theme="dark"] .nav-item-btn.active {
-  color: #FFA588;
-  border-bottom-color: var(--accent);
-  background: rgba(200, 90, 62, 0.12);
+  text-shadow: 0 0 12px rgba(187, 129, 48, 0.3);
 }
 
 /* ========================================================
-   MAIN CONTENT CONTAINER
+   CONTENEUR PRINCIPAL
    ======================================================== */
 .site-main {
   flex: 1;
@@ -294,7 +295,7 @@ h1, h2, h3, h4, .brand-text-title, .big {
 }
 
 /* ========================================================
-   CARDS & SURFACES ÉPURÉES
+   CARTES (CARDS) & SURFACES NATURELLES
    ======================================================== */
 .card {
   background: var(--card);
@@ -303,46 +304,53 @@ h1, h2, h3, h4, .brand-text-title, .big {
   padding: 24px;
   margin-bottom: 22px;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
 }
 
 .card:hover {
+  border-color: #5A2718;
   box-shadow: var(--shadow-md);
 }
 
 .card-hero {
-  background: linear-gradient(135deg, var(--card) 65%, var(--sand-light) 100%);
-  border: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--card) 45%, var(--card-alt) 80%, rgba(110, 60, 25, 0.25) 100%);
+  border: 1px solid #5A2718;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 3px 14px rgba(13, 59, 78, 0.04);
+  box-shadow: var(--shadow-md);
+}
+
+.card-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  background: radial-gradient(circle at 100% 0%, rgba(187, 129, 48, 0.12) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .card h2 {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
   margin: 0 0 14px;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   line-height: 1.3;
 }
 
 .card h3 {
-  font-size: 16px;
+  font-size: 16.5px;
   font-weight: 700;
   margin: 0 0 8px;
   line-height: 1.35;
 }
 
-.mut {
-  color: var(--text-muted);
-  font-size: 13.5px;
-  line-height: 1.5;
-}
-
 /* ========================================================
-   GRID SYSTEMS
+   GRILLES RESPONSIVES
    ======================================================== */
 .grid-2 {
   display: grid;
@@ -395,7 +403,7 @@ h1, h2, h3, h4, .brand-text-title, .big {
 }
 
 /* ========================================================
-   BADGES & PILLS
+   BADGES, PILULES & ÉLÉMENTS D’INDICATEURS
    ======================================================== */
 .pill {
   display: inline-flex;
@@ -405,30 +413,121 @@ h1, h2, h3, h4, .brand-text-title, .big {
   font-weight: 600;
   padding: 4px 11px;
   border-radius: 99px;
-  background: var(--sand-light);
-  color: var(--primary);
+  background: var(--card-alt);
+  color: var(--text-secondary);
   border: 1px solid var(--border);
   letter-spacing: 0.01em;
 }
 
 .pill.ok {
-  background: var(--olive-light);
-  color: var(--olive);
-  border-color: rgba(90, 107, 68, 0.35);
+  background: var(--forest);
+  color: var(--olive-text);
+  border-color: rgba(71, 78, 48, 0.6);
   font-weight: 700;
 }
 
 .pill.accent {
-  background: var(--accent-light);
-  color: var(--accent);
-  border-color: rgba(200, 90, 62, 0.35);
+  background: rgba(148, 60, 26, 0.28);
+  color: #FFA585;
+  border-color: rgba(148, 60, 26, 0.5);
   font-weight: 700;
 }
 
 .pill.primary {
-  background: rgba(13, 59, 78, 0.08);
-  color: var(--primary);
-  border-color: rgba(13, 59, 78, 0.22);
+  background: rgba(187, 129, 48, 0.16);
+  color: var(--gold);
+  border-color: var(--border-gold);
+}
+
+.pill.white-accent {
+  background: #FFFFFF;
+  color: var(--accent);
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.02em;
+}
+
+.pill.white-gold {
+  background: #FFFFFF;
+  color: var(--gold-warm);
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.pill.outline-white {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+}
+
+/* Bannière d'Invitation & Présentation de Voyage Partagé (Couleur Principale + Blanc) */
+.card-invite-banner {
+  background: linear-gradient(135deg, #2A1209 0%, #38190E 50%, #461E10 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-xl);
+  padding: 26px 28px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.card-invite-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #FFFFFF 0%, var(--gold) 40%, var(--accent) 80%, #FFFFFF 100%);
+}
+
+.rsvp-choice-card {
+  background: rgba(17, 7, 3, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-top: 18px;
+  backdrop-filter: blur(8px);
+}
+
+.white-chip {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #FFFFFF;
+  font-size: 13.5px;
+  backdrop-filter: blur(4px);
+}
+
+.white-chip b {
+  color: #FFFFFF;
+}
+
+.toast-feedback {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #FFFFFF;
+  color: #110703;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  font-weight: 700;
+  font-size: 14px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: modalIn 0.25s ease;
+  border: 2px solid var(--accent);
 }
 
 .mode-badge {
@@ -444,35 +543,23 @@ h1, h2, h3, h4, .brand-text-title, .big {
 }
 
 .mode-badge.group {
-  background: rgba(13, 59, 78, 0.08);
-  color: var(--primary);
-  border: 1px solid rgba(13, 59, 78, 0.22);
+  background: rgba(187, 129, 48, 0.16);
+  color: var(--gold);
+  border: 1px solid rgba(187, 129, 48, 0.45);
 }
 
 .mode-badge.solo {
-  background: rgba(200, 90, 62, 0.12);
-  color: var(--accent);
-  border: 1px solid rgba(200, 90, 62, 0.28);
-}
-
-:root[data-theme="dark"] .mode-badge.group {
-  background: rgba(22, 81, 106, 0.35);
-  color: #BEE3F8;
-  border-color: rgba(22, 81, 106, 0.6);
-}
-
-:root[data-theme="dark"] .mode-badge.solo {
-  background: rgba(200, 90, 62, 0.25);
-  color: #FFB39E;
-  border-color: rgba(200, 90, 62, 0.45);
+  background: rgba(148, 60, 26, 0.26);
+  color: #FFB399;
+  border: 1px solid rgba(148, 60, 26, 0.5);
 }
 
 /* ========================================================
-   PROGRESS BAR
+   BARRES DE PROGRESSION
    ======================================================== */
 .bar {
   height: 9px;
-  background: var(--sand-light);
+  background: #170904;
   border-radius: 99px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -482,13 +569,14 @@ h1, h2, h3, h4, .brand-text-title, .big {
 .bar i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent) 0%, var(--olive) 100%);
+  background: linear-gradient(90deg, var(--accent-rust) 0%, var(--gold) 65%, var(--khaki-gold) 100%);
   border-radius: 99px;
   transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(187, 129, 48, 0.4);
 }
 
 /* ========================================================
-   BUTTONS
+   BOUTONS CUIVRÉS & ÉTATS DE SURVOL LUMINEUX
    ======================================================== */
 button, .btn {
   font-family: "Plus Jakarta Sans", system-ui, sans-serif;
@@ -497,24 +585,28 @@ button, .btn {
   border: 0;
   border-radius: var(--radius-md);
   padding: 10px 18px;
-  background: var(--primary);
-  color: #FFFFFF;
+  background: var(--accent-rust);
+  color: #FFF7F0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   min-height: 42px;
-  box-shadow: 0 1px 3px rgba(13, 59, 78, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   letter-spacing: -0.01em;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Effet illuminant demandé : passage du brun/rouille à l'or ambré chaleureux */
 button:hover, .btn:hover {
-  background: var(--primary-light);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(13, 59, 78, 0.14);
+  background: var(--gold);
+  color: var(--text-inverse);
+  transform: translateY(-1.5px);
+  box-shadow: 0 5px 16px rgba(187, 129, 48, 0.35);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 button:active, .btn:active {
@@ -522,68 +614,61 @@ button:active, .btn:active {
 }
 
 button.accent, .btn.accent {
-  background: var(--accent);
-  color: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(200, 90, 62, 0.25);
+  background: var(--accent-rust);
+  color: #FFF7F0;
 }
 
 button.accent:hover, .btn.accent:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 4px 12px rgba(200, 90, 62, 0.35);
+  background: var(--gold);
+  color: #110703;
+  box-shadow: 0 5px 18px rgba(187, 129, 48, 0.45);
 }
 
 button.olive, .btn.olive {
-  background: var(--olive);
-  color: #FFFFFF;
+  background: var(--forest);
+  color: #D9E8D2;
+  border-color: rgba(71, 78, 48, 0.5);
 }
 
 button.olive:hover, .btn.olive:hover {
-  background: var(--olive-hover);
+  background: var(--khaki);
+  color: #FFFFFF;
 }
 
 button.alt, .btn.alt {
   background: transparent;
-  color: var(--primary);
-  border: 1.5px solid var(--primary);
+  color: var(--gold);
+  border: 1.5px solid var(--gold);
   box-shadow: none;
 }
 
 button.alt:hover, .btn.alt:hover {
-  background: rgba(13, 59, 78, 0.06);
-}
-
-:root[data-theme="dark"] button.alt,
-:root[data-theme="dark"] .btn.alt {
-  color: #FAF6EF;
-  border-color: #FAF6EF;
+  background: var(--gold);
+  color: #110703;
+  box-shadow: 0 4px 14px rgba(187, 129, 48, 0.3);
 }
 
 button.subtle, .btn.subtle {
-  background: var(--sand-light);
-  color: var(--primary);
+  background: var(--card-alt);
+  color: var(--text-secondary);
   border: 1px solid var(--border);
   box-shadow: none;
 }
 
 button.subtle:hover, .btn.subtle:hover {
-  background: var(--sand);
-  border-color: var(--sand-dark);
-}
-
-:root[data-theme="dark"] button.subtle,
-:root[data-theme="dark"] .btn.subtle {
-  background: var(--card-subtle);
-  color: #FAF6EF;
-  border-color: var(--border);
+  background: #421D11;
+  color: #FFF6EE;
+  border-color: var(--gold);
 }
 
 button.bad, .btn.bad {
-  background: #C93427;
+  background: #842318;
   color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 button.bad:hover, .btn.bad:hover {
-  background: #B0271C;
+  background: #A32B1E;
 }
 
 button.sm, .btn.sm {
@@ -594,7 +679,7 @@ button.sm, .btn.sm {
 }
 
 /* ========================================================
-   INPUTS & FORM CONTROLS
+   CHAMPS DE SAISIE & FORMULAIRES
    ======================================================== */
 input, select, textarea {
   width: 100%;
@@ -602,93 +687,96 @@ input, select, textarea {
   margin: 6px 0 12px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  background: var(--card);
+  background: #1C0C06;
   color: var(--text);
   font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 14px;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  transition: all 0.2s ease;
   min-height: 44px;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(200, 90, 62, 0.18);
+  border-color: var(--gold);
+  background: #240F08;
+  box-shadow: 0 0 0 3px rgba(187, 129, 48, 0.25);
 }
 
 input::placeholder, textarea::placeholder {
-  color: var(--text-muted);
-  opacity: 0.8;
+  color: #8C7362;
 }
 
 label {
   font-size: 13.5px;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--text-secondary);
   display: block;
   margin-bottom: 2px;
 }
 
-:root[data-theme="dark"] label {
-  color: #FAF6EF;
+select option {
+  background: #230F08;
+  color: var(--text);
 }
 
 /* ========================================================
-   CHAT & MESSAGES
+   MESSAGES & CARNET
    ======================================================== */
 .msg {
   padding: 12px 16px;
   border-radius: var(--radius-md);
-  background: var(--sand-light);
+  background: var(--card-alt);
   margin: 10px 0;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border);
   line-height: 1.55;
+  color: var(--text);
 }
 
 .msg.me {
-  background: var(--primary);
-  color: #FFFFFF;
+  background: var(--accent-rust);
+  color: #FFF7F0;
   margin-left: 56px;
   border-color: transparent;
-  box-shadow: 0 2px 8px rgba(13, 59, 78, 0.12);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
 }
 
 .msg.me b {
-  color: #FFE5D9;
+  color: #FFE6D6;
 }
 
 .msg.me .mut {
-  color: #D3E4ED;
+  color: #E6CEC0;
 }
 
 /* ========================================================
-   NUMBERS & HIGHLIGHTS
+   CHIFFRES & GRANDS TITRES
    ======================================================== */
 .big {
   font-size: 26px;
   font-weight: 800;
-  color: var(--primary);
+  color: #FFF6EE;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
 }
 
 .big.accent {
-  color: var(--accent);
+  color: var(--gold);
+  text-shadow: 0 0 16px rgba(187, 129, 48, 0.25);
 }
 
 .big.olive {
-  color: var(--olive);
+  color: var(--olive-text);
 }
 
 /* ========================================================
-   MODAL OVERLAY
+   FENÊTRE MODALE
    ======================================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(13, 59, 78, 0.65);
-  backdrop-filter: blur(5px);
+  background: rgba(17, 7, 3, 0.85);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -698,7 +786,7 @@ label {
 
 .modal-content {
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-xl);
   max-width: 650px;
   width: 100%;
@@ -721,7 +809,7 @@ label {
 }
 
 /* ========================================================
-   DETAILS & ACCORDIONS
+   ACCORDÉONS & DÉTAILS
    ======================================================== */
 details {
   border-top: 1px solid var(--border-light);
@@ -732,16 +820,12 @@ details summary {
   font-weight: 700;
   font-size: 15px;
   cursor: pointer;
-  color: var(--primary);
+  color: #FFF6EE;
   list-style: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 4px 0;
-}
-
-:root[data-theme="dark"] details summary {
-  color: #FAF6EF;
 }
 
 details summary::-webkit-details-marker {
@@ -751,7 +835,7 @@ details summary::-webkit-details-marker {
 details summary::after {
   content: '▼';
   font-size: 10px;
-  color: var(--accent);
+  color: var(--gold);
   transition: transform 0.2s ease;
 }
 
@@ -767,7 +851,7 @@ details p {
 }
 
 /* ========================================================
-   CHECKLIST & ITINERARY ITEMS
+   CHECKLIST & ITEMS CLIQUEABLES
    ======================================================== */
 .check-item {
   display: flex;
@@ -775,16 +859,16 @@ details p {
   gap: 12px;
   padding: 11px 15px;
   background: var(--card-subtle);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   margin-bottom: 8px;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .check-item:hover {
-  background: var(--sand-light);
-  border-color: var(--border);
+  background: var(--card-alt);
+  border-color: var(--gold);
 }
 
 .check-item.done {
@@ -793,7 +877,7 @@ details p {
 }
 
 /* ========================================================
-   EMPTY STATES
+   BOÎTES D'ÉTATS VIDES
    ======================================================== */
 .empty-box {
   text-align: center;

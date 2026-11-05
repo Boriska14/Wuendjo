@@ -58,7 +58,7 @@ export default function Chat() {
       <div>
         <div className="card card-hero">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <BookOpen size={20} color="var(--primary)" />
+            <BookOpen size={20} color="var(--gold)" />
             <span className="pill primary">Carnet de Route & Pensées</span>
           </div>
           <h1 className="big" style={{ margin: '0 0 6px', fontSize: '26px' }}>
@@ -88,11 +88,11 @@ export default function Chat() {
               <h2>Mes entrées de carnet ({notes.length})</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '12px' }}>
                 {notes.map(note => (
-                  <div key={note.id} style={{ background: 'var(--sand-light)', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+                  <div key={note.id} style={{ background: 'var(--card-alt)', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                      <span className="pill" style={{ fontSize: '11px' }}>{note.date}</span>
-                      <button className="subtle sm" onClick={() => deleteNote(note.id)} style={{ padding: '3px 6px', border: 'none', background: 'transparent' }}>
-                        <Trash2 size={13} color="var(--accent)" />
+                      <span className="pill primary" style={{ fontSize: '11px' }}>{note.date}</span>
+                      <button className="subtle sm" onClick={() => deleteNote(note.id)} style={{ padding: '3px 6px', border: 'none', background: 'transparent' }} title="Supprimer">
+                        <Trash2 size={13} color="var(--accent-beaver)" />
                       </button>
                     </div>
                     <p style={{ margin: 0, fontSize: '14px', color: 'var(--text)', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>

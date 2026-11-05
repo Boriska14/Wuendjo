@@ -25,24 +25,53 @@ import {
   Trash2,
   PieChart as PieIcon,
   BarChart2,
-  CheckCircle,
-  Clock
+  ArrowRightLeft,
+  Coins,
+  Globe,
+  Calculator,
+  Check,
+  CheckCircle2
 } from 'lucide-react';
 
 const CATEGORY_META = {
-  'Transport': { label: 'Transport', color: '#0D3B4E', icon: Plane, bg: 'rgba(13, 59, 78, 0.08)' },
-  'Hébergement': { label: 'Hébergement', color: '#C85A3E', icon: Home, bg: 'rgba(200, 90, 62, 0.1)' },
-  'Nourriture': { label: 'Nourriture', color: '#D49439', icon: Utensils, bg: 'rgba(212, 148, 57, 0.12)' },
-  'Activités': { label: 'Activités', color: '#5A6B44', icon: Sparkles, bg: 'rgba(90, 107, 68, 0.12)' },
-  'Autre': { label: 'Autres', color: '#7E8B92', icon: MoreHorizontal, bg: 'rgba(126, 139, 146, 0.1)' }
+  'Transport': { label: 'Transport', color: '#A7795E', icon: Plane, bg: 'rgba(167, 121, 94, 0.22)' },
+  'Hébergement': { label: 'Hébergement', color: '#943C1A', icon: Home, bg: 'rgba(148, 60, 26, 0.26)' },
+  'Nourriture': { label: 'Nourriture', color: '#BB8130', icon: Utensils, bg: 'rgba(187, 129, 48, 0.24)' },
+  'Activités': { label: 'Activités', color: '#474E30', icon: Sparkles, bg: 'rgba(71, 78, 48, 0.32)' },
+  'Autre': { label: 'Autres', color: '#6E3C19', icon: MoreHorizontal, bg: 'rgba(110, 60, 25, 0.3)' }
+};
+
+// Grille de devises internationales courantes pour les voyages en Afrique et dans le monde
+// Taux de référence exprimés en FCFA (XAF / XOF)
+const INITIAL_RATES = {
+  XAF: { code: 'XAF', symbol: 'FCFA', name: 'Franc CFA (CEMAC/UEMOA)', rateToFcfa: 1, flag: '🇨🇲' },
+  EUR: { code: 'EUR', symbol: '€', name: 'Euro (Zone Euro)', rateToFcfa: 655.957, flag: '🇪🇺' },
+  USD: { code: 'USD', symbol: '$', name: 'Dollar américain (USA)', rateToFcfa: 605.5, flag: '🇺🇸' },
+  KES: { code: 'KES', symbol: 'KSh', name: 'Shilling kényan (Kenya)', rateToFcfa: 4.70, flag: '🇰🇪' },
+  MAD: { code: 'MAD', symbol: 'DH', name: 'Dirham marocain (Maroc)', rateToFcfa: 60.5, flag: '🇲🇦' },
+  GBP: { code: 'GBP', symbol: '£', name: 'Livre sterling (UK)', rateToFcfa: 780.0, flag: '🇬🇧' },
+  CAD: { code: 'CAD', symbol: 'C$', name: 'Dollar canadien (Canada)', rateToFcfa: 442.0, flag: '🇨🇦' },
+  NGN: { code: 'NGN', symbol: '₦', name: 'Naira (Nigéria)', rateToFcfa: 0.42, flag: '🇳🇬' },
+  GHS: { code: 'GHS', symbol: 'GH₵', name: 'Cedi (Ghana)', rateToFcfa: 39.5, flag: '🇬🇭' },
+  ZAR: { code: 'ZAR', symbol: 'R', name: 'Rand (Afrique du Sud)', rateToFcfa: 34.2, flag: '🇿🇦' }
 };
 
 export default function Budget() {
   const { t, me, org, upd } = useApp();
+
+  // États pour les dépenses
   const [expenseLabel, setExpenseLabel] = useState('');
   const [expenseAmount, setExpenseAmount] = useState('');
   const [expenseCat, setExpenseCat] = useState('Transport');
   const [chartType, setChartType] = useState('pie'); // 'pie' ou 'bar'
+
+  // États pour le convertisseur de devises intégré
+  const [convAmount, setConvAmount] = useState('100');
+  const [fromCurr, setFromCurr] = useState('EUR');
+  const [toCurr, setToCurr] = useState('XAF');
+  const [customRates, setCustomRates] = useState(INITIAL_RATES);
+  const [showRateEditor, setShowRateEditor] = useState(false);
+  const [lastConvertedExpense, setLastConvertedExpense] = useState(null);
 
   const isSolo = t.mode === 'solo';
   const ledger = t.ledger || [];
@@ -57,7 +86,7 @@ export default function Budget() {
   const effectiveBudget = totalIn > 0 ? totalIn : baseBudget;
   const pctConsumed = effectiveBudget > 0 ? Math.min(100, Math.round((totalOut / effectiveBudget) * 100)) : 0;
 
-  // Ventilation des dépenses pour les 4 catégories demandées : Transport, Hébergement, Nourriture, Activités
+  // Ventilation des dépenses pour les 4 catégories demandées
   const expensesOnly = ledger.filter(l => l.s < 0);
   const catTotals = {
     'Transport': 0,
@@ -82,7 +111,7 @@ export default function Budget() {
     }
   });
 
-  // Données prêtes pour le graphique Recharts
+  // Données pour le graphique Recharts
   const pieData = [
     { name: 'Transport', value: catTotals['Transport'], color: CATEGORY_META['Transport'].color },
     { name: 'Hébergement', value: catTotals['Hébergement'], color: CATEGORY_META['Hébergement'].color },
@@ -91,7 +120,6 @@ export default function Budget() {
     ...(catTotals['Autre'] > 0 ? [{ name: 'Autres', value: catTotals['Autre'], color: CATEGORY_META['Autre'].color }] : [])
   ].filter(d => d.value > 0);
 
-  // Données comparatives prévisionnel vs réel
   const plan = t.budgetPlan || {
     transport: Math.round(effectiveBudget * 0.30),
     hebergement: Math.round(effectiveBudget * 0.35),
@@ -106,7 +134,7 @@ export default function Budget() {
     { name: 'Activités', Réel: catTotals['Activités'], Prévu: plan.activites || 0 }
   ];
 
-  // Gestion de l'ajout d'une nouvelle dépense
+  // Gestion de l'ajout d'une nouvelle dépense manuelle
   const handleAddExpense = (e) => {
     e?.preventDefault();
     if (!expenseAmount || isNaN(expenseAmount)) return;
@@ -138,6 +166,65 @@ export default function Budget() {
     });
   };
 
+  // LOGIQUE DU CONVERTISSEUR DE DEVISES
+  const numAmount = parseFloat(convAmount) || 0;
+  const rateFrom = customRates[fromCurr]?.rateToFcfa || 1;
+  const rateTo = customRates[toCurr]?.rateToFcfa || 1;
+
+  // Montant converti : d'abord vers le pivot FCFA, puis vers la devise cible
+  const amountInFcfa = numAmount * rateFrom;
+  const convertedResult = rateTo > 0 ? amountInFcfa / rateTo : 0;
+  const directExchangeRate = rateTo > 0 ? rateFrom / rateTo : 1;
+
+  // Inverser les deux devises
+  const handleSwapCurrencies = () => {
+    const prevFrom = fromCurr;
+    const prevTo = toCurr;
+    setFromCurr(prevTo);
+    setToCurr(prevFrom);
+    if (convertedResult > 0) {
+      setConvAmount(Math.round(convertedResult * 100) / 100);
+    }
+  };
+
+  // Transférer la conversion vers le formulaire de dépense ou l'enregistrer directement
+  const transferToExpenseForm = (directSave = false) => {
+    const fcfaValue = Math.round(amountInFcfa);
+    const currSymbol = customRates[fromCurr]?.symbol || fromCurr;
+    const desc = `[${numAmount.toLocaleString('fr-FR')} ${currSymbol}] Dépense internationale (${fromCurr})`;
+
+    if (directSave) {
+      upd(s => {
+        const trip = cur(s);
+        if (!trip.ledger) trip.ledger = [];
+        trip.ledger.unshift({
+          l: desc,
+          s: -fcfaValue,
+          cat: expenseCat,
+          date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })
+        });
+      });
+      setLastConvertedExpense(`Dépense de ${F(fcfaValue)} ajoutée au grand livre !`);
+      setTimeout(() => setLastConvertedExpense(null), 4000);
+    } else {
+      setExpenseAmount(fcfaValue);
+      setExpenseLabel(desc);
+      setLastConvertedExpense(`Montant de ${F(fcfaValue)} copié dans le formulaire de dépense !`);
+      setTimeout(() => setLastConvertedExpense(null), 4000);
+      // Faire défiler doucement vers le formulaire
+      document.getElementById('expense-form-card')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Paliers de conversion rapide (Cheat Sheet pour voyageurs)
+  const getCheatSheetSteps = () => {
+    if (fromCurr === 'KES') return [500, 1000, 2000, 5000, 10000];
+    if (fromCurr === 'MAD') return [50, 100, 200, 500, 1000];
+    if (fromCurr === 'EUR' || fromCurr === 'USD' || fromCurr === 'GBP' || fromCurr === 'CAD') return [10, 25, 50, 100, 200];
+    if (fromCurr === 'NGN') return [1000, 5000, 10000, 25000, 50000];
+    return [1000, 5000, 10000, 25000, 50000];
+  };
+
   // Custom tooltip épuré pour Recharts
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -146,16 +233,16 @@ export default function Budget() {
       const pct = totalOut > 0 ? Math.round((val / totalOut) * 100) : 0;
       return (
         <div style={{
-          background: '#FFFFFF',
+          background: '#230F08',
           border: '1.5px solid var(--border)',
           borderRadius: '10px',
           padding: '10px 14px',
-          boxShadow: '0 4px 14px rgba(13, 59, 78, 0.1)'
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.75)'
         }}>
-          <div style={{ fontSize: '13px', fontWeight: 700, color: data.payload.color || data.color || 'var(--primary)', marginBottom: '4px' }}>
+          <div style={{ fontSize: '13px', fontWeight: 700, color: data.payload.color || data.color || 'var(--gold)', marginBottom: '4px' }}>
             {data.name || data.dataKey}
           </div>
-          <div style={{ fontSize: '15px', fontWeight: 800, color: 'var(--text)' }}>
+          <div style={{ fontSize: '16px', fontWeight: 800, color: '#FAF0E6' }}>
             {F(val)}
           </div>
           {totalOut > 0 && (
@@ -237,7 +324,7 @@ export default function Budget() {
       </div>
 
       {/* SECTION GRAPHIQUE RECHARTS : RÉPARTITION PAR CATÉGORIES */}
-      <div className="card" style={{ padding: '26px' }}>
+      <div className="card" style={{ padding: '26px', marginBottom: '22px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', marginBottom: '18px' }}>
           <div>
             <h2 style={{ margin: '0 0 4px', fontSize: '20px' }}>
@@ -294,7 +381,7 @@ export default function Budget() {
                       dataKey="value"
                     >
                       {pieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} stroke="#FFFFFF" strokeWidth={2} />
+                        <Cell key={`cell-${index}`} fill={entry.color} stroke="#230F08" strokeWidth={3} />
                       ))}
                     </Pie>
                     <Tooltip content={<CustomTooltip />} />
@@ -304,9 +391,9 @@ export default function Budget() {
                     <XAxis dataKey="name" stroke="var(--text-muted)" fontSize={12} tickLine={false} />
                     <YAxis stroke="var(--text-muted)" fontSize={11} tickFormatter={v => `${v / 1000}k`} tickLine={false} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="Réel" fill="var(--accent)" radius={[6, 6, 0, 0]} />
-                    <Bar dataKey="Prévu" fill="var(--sand-dark)" radius={[6, 6, 0, 0]} />
-                    <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+                    <Bar dataKey="Réel" fill="#943C1A" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="Prévu" fill="#6E3C19" radius={[6, 6, 0, 0]} />
+                    <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px', color: 'var(--text-secondary)' }} />
                   </BarChart>
                 )}
               </ResponsiveContainer>
@@ -393,10 +480,240 @@ export default function Budget() {
         )}
       </div>
 
+      {/* ========================================================
+          OUTIL DE CONVERSION DE DEVISES INTÉGRÉ
+          ======================================================== */}
+      <div className="card" style={{ padding: '24px', marginBottom: '22px', background: 'linear-gradient(135deg, var(--card) 60%, var(--card-alt) 100%)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              <Coins size={20} color="var(--gold)" />
+              <span className="pill primary" style={{ fontSize: '11px' }}>Outil Voyage International</span>
+            </div>
+            <h2 style={{ margin: 0, fontSize: '20px' }}>Convertisseur de Devises Intégré</h2>
+            <p className="mut" style={{ margin: '4px 0 0' }}>
+              Convertissez instantanément vos dépenses locales (EUR, USD, KES, MAD, etc.) en Franc CFA pour les intégrer directement à votre budget.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className="subtle sm"
+            onClick={() => setShowRateEditor(!showRateEditor)}
+            style={{ fontSize: '12.5px' }}
+          >
+            <Globe size={13} /> {showRateEditor ? 'Masquer les taux' : 'Consulter / Ajuster les taux'}
+          </button>
+        </div>
+
+        {/* Panneau d'ajustement des taux si activé */}
+        {showRateEditor && (
+          <div style={{ background: '#1A0B06', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', marginBottom: '16px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--gold)', marginBottom: '10px' }}>
+              Taux de change appliqués (1 unité = X Franc CFA)
+            </div>
+            <div className="grid-3" style={{ gap: '10px' }}>
+              {Object.keys(customRates).filter(k => k !== 'XAF').map(code => (
+                <div key={code} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--card-subtle)', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 600 }}>{customRates[code].flag} 1 {code} =</span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={customRates[code].rateToFcfa}
+                    onChange={e => {
+                      const val = parseFloat(e.target.value) || 0;
+                      setCustomRates(prev => ({
+                        ...prev,
+                        [code]: { ...prev[code], rateToFcfa: val }
+                      }));
+                    }}
+                    style={{
+                      width: '90px',
+                      margin: 0,
+                      padding: '4px 8px',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      textAlign: 'right',
+                      minHeight: 'auto'
+                    }}
+                  />
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginLeft: '4px' }}>FCFA</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Bloc interactif de conversion */}
+        <div style={{
+          background: 'var(--card)',
+          border: '1.5px solid var(--border)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '20px',
+          boxShadow: 'var(--shadow-sm)'
+        }}>
+          <div className="grid-1-2" style={{ alignItems: 'center', gap: '20px' }}>
+            {/* Colonne gauche : Saisie et Devises */}
+            <div>
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.4px', color: 'var(--text-muted)' }}>
+                  Montant à convertir
+                </label>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <input
+                    type="number"
+                    value={convAmount}
+                    onChange={e => setConvAmount(e.target.value)}
+                    placeholder="100"
+                    style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}
+                  />
+                  <select
+                    value={fromCurr}
+                    onChange={e => setFromCurr(e.target.value)}
+                    style={{ margin: 0, width: '130px', fontWeight: 700 }}
+                  >
+                    {Object.keys(customRates).map(c => (
+                      <option key={c} value={c}>{customRates[c].flag} {c}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '4px 0' }}>
+                <button
+                  type="button"
+                  className="subtle sm"
+                  onClick={handleSwapCurrencies}
+                  title="Inverser les devises"
+                  style={{ borderRadius: '99px', padding: '6px 14px', fontSize: '12px' }}
+                >
+                  <ArrowRightLeft size={13} /> Inverser les devises
+                </button>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.4px', color: 'var(--text-muted)' }}>
+                  Devise de destination
+                </label>
+                <select
+                  value={toCurr}
+                  onChange={e => setToCurr(e.target.value)}
+                  style={{ margin: 0, fontWeight: 700 }}
+                >
+                  {Object.keys(customRates).map(c => (
+                    <option key={c} value={c}>{customRates[c].flag} {customRates[c].name}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Colonne droite : Résultat direct & Actions d'insertion au budget */}
+            <div style={{
+              background: 'var(--card-alt)',
+              borderRadius: 'var(--radius-md)',
+              padding: '20px',
+              border: '1px solid var(--border)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minHeight: '180px'
+            }}>
+              <div>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>
+                  Valeur équivalente convertie :
+                </div>
+                <div style={{
+                  fontSize: '28px',
+                  fontWeight: 800,
+                  color: 'var(--gold)',
+                  fontFamily: '"Bricolage Grotesque", sans-serif',
+                  margin: '4px 0',
+                  textShadow: '0 0 16px rgba(187, 129, 48, 0.3)'
+                }}>
+                  {convertedResult.toLocaleString('fr-FR', { maximumFractionDigits: toCurr === 'XAF' ? 0 : 2 })} {customRates[toCurr]?.symbol}
+                </div>
+                <div style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>
+                  Taux direct : <b>1 {fromCurr} = {directExchangeRate.toLocaleString('fr-FR', { maximumFractionDigits: 4 })} {toCurr}</b>
+                </div>
+              </div>
+
+              {/* Actions d'intégration directe au budget */}
+              <div style={{ marginTop: '16px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  className="accent sm"
+                  onClick={() => transferToExpenseForm(true)}
+                  title="Ajouter directement comme dépense dans le grand livre"
+                  style={{ flex: 1, minHeight: '36px' }}
+                >
+                  <Plus size={14} /> Enregistrer comme dépense ({F(Math.round(amountInFcfa))})
+                </button>
+                <button
+                  type="button"
+                  className="subtle sm"
+                  onClick={() => transferToExpenseForm(false)}
+                  title="Pré-remplir le formulaire de saisie manuelle ci-dessous"
+                  style={{ minHeight: '36px' }}
+                >
+                  Pré-remplir le formulaire
+                </button>
+              </div>
+
+              {lastConvertedExpense && (
+                <div style={{
+                  marginTop: '10px',
+                  padding: '6px 10px',
+                  background: 'var(--olive-light)',
+                  color: 'var(--olive)',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}>
+                  <CheckCircle2 size={14} /> {lastConvertedExpense}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Répères rapides (Cheat Sheet voyageur pour la devise active) */}
+          <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-light)' }}>
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '8px' }}>
+              💡 Repères rapides pour {customRates[fromCurr]?.name} vers le Franc CFA :
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {getCheatSheetSteps().map(val => {
+                const converted = Math.round(val * rateFrom);
+                return (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setConvAmount(String(val))}
+                    className="subtle sm"
+                    style={{
+                      padding: '4px 10px',
+                      fontSize: '12px',
+                      minHeight: 'auto',
+                      background: convAmount === String(val) ? 'var(--gold)' : 'var(--card-subtle)',
+                      color: convAmount === String(val) ? '#110703' : 'var(--text)',
+                      borderColor: convAmount === String(val) ? 'var(--gold)' : 'var(--border)'
+                    }}
+                  >
+                    <b>{val.toLocaleString('fr-FR')} {customRates[fromCurr]?.symbol}</b> = {converted.toLocaleString('fr-FR')} F
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* FORMULAIRE D'AJOUT RAPIDE & GRAND LIVRE */}
       <div className="grid-2">
         {/* COLONNE GAUCHE : SAISIE D'UNE DÉPENSE */}
-        <div className="card">
+        <div id="expense-form-card" className="card">
           <h2>
             <Plus size={18} color="var(--accent)" />
             Ajouter une dépense au séjour

@@ -85,7 +85,7 @@ export default function Visa() {
     <div>
       <div className="card card-hero">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <Globe size={20} color="var(--primary)" />
+          <Globe size={20} color="var(--gold)" />
           <span className="pill primary">Formalités, Visas & Découverte Internationale</span>
         </div>
         <h1 className="big" style={{ margin: '0 0 6px', fontSize: '26px' }}>
@@ -100,7 +100,7 @@ export default function Visa() {
         <div>
           <div className="card">
             <h2>
-              <Search size={18} color="var(--accent)" />
+              <Search size={18} color="var(--gold)" />
               Rechercher une destination
             </h2>
 
@@ -143,7 +143,7 @@ export default function Visa() {
             </div>
 
             {err && (
-              <div style={{ marginTop: '12px', padding: '10px 14px', background: 'var(--accent-light)', color: 'var(--accent)', borderRadius: 'var(--radius-sm)', fontSize: '13px' }}>
+              <div style={{ marginTop: '12px', padding: '10px 14px', background: 'rgba(148, 60, 26, 0.25)', color: '#FFB399', border: '1px solid rgba(148, 60, 26, 0.45)', borderRadius: 'var(--radius-sm)', fontSize: '13px' }}>
                 {err}
               </div>
             )}
@@ -164,13 +164,13 @@ export default function Visa() {
                       cursor: 'pointer',
                       padding: '12px',
                       borderRadius: 'var(--radius-md)',
-                      background: detn === x.n ? 'var(--sand-light)' : 'var(--card-subtle)',
-                      border: detn === x.n ? '1.5px solid var(--accent)' : '1px solid var(--border-light)'
+                      background: detn === x.n ? 'var(--card-alt)' : 'var(--card-subtle)',
+                      border: detn === x.n ? '1.5px solid var(--gold)' : '1px solid var(--border)'
                     }}
                   >
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '15px', color: 'var(--primary)' }}>
-                        <MapPin size={14} color="var(--accent)" /> {x.n}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '15px', color: '#FFF6EE' }}>
+                        <MapPin size={14} color="var(--gold)" /> {x.n}
                       </div>
                       <div className="mut" style={{ fontSize: '13px', marginTop: '4px' }}>
                         {x.s || 'Consulter la fiche détaillée pour les exigences complètes.'}

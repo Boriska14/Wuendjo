@@ -20,7 +20,7 @@ export default function Manage() {
   if (!isSolo && !org) {
     return (
       <div className="card" style={{ textAlign: 'center', padding: '40px 20px' }}>
-        <Shield size={40} color="var(--accent)" style={{ margin: '0 auto 12px' }} />
+        <Shield size={40} color="var(--gold)" style={{ margin: '0 auto 12px' }} />
         <h2>Espace réservé à l’Organisateur</h2>
         <p className="mut" style={{ maxWidth: '500px', margin: '0 auto 16px' }}>
           La gestion des inscriptions, des paiements et des réglages du séjour est réservée au créateur du voyage.
@@ -50,7 +50,7 @@ export default function Manage() {
     <div>
       <div className="card card-hero">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <Settings size={20} color="var(--primary)" />
+          <Settings size={20} color="var(--gold)" />
           <span className="pill primary">Tableau de bord de Gestion</span>
         </div>
         <h1 className="big" style={{ margin: '0 0 6px', fontSize: '26px' }}>
@@ -68,7 +68,7 @@ export default function Manage() {
               {/* Inscriptions */}
               <div className="card">
                 <h2>
-                  <Users size={18} color="var(--primary)" />
+                  <Users size={18} color="var(--gold)" />
                   Gestion des Inscriptions ({people.length})
                 </h2>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
@@ -116,6 +116,37 @@ export default function Manage() {
                   {!people.length && (
                     <div className="empty-box">
                       <p>Aucun participant inscrit pour l'instant.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Invitations déclinées */}
+              <div className="card">
+                <h2>
+                  <X size={18} color="var(--accent)" />
+                  Invitations Déclinées ({(t.declined || []).length})
+                </h2>
+                <p className="mut">Les amis ayant indiqué ne pas pouvoir participer s'affichent ici avec leur mot amical.</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
+                  {(t.declined || []).map((d, idx) => (
+                    <div key={d.id || idx} className="row">
+                      <div>
+                        <b style={{ color: '#FFFFFF' }}>{d.name}</b>
+                        {d.date && <span className="mut" style={{ fontSize: '11px', marginLeft: '6px' }}>({d.date})</span>}
+                        {d.why && (
+                          <div style={{ fontSize: '12.5px', color: 'var(--text-muted)', fontStyle: 'italic', marginTop: '2px' }}>
+                            « {d.why} »
+                          </div>
+                        )}
+                      </div>
+                      <span className="pill" style={{ fontSize: '11px' }}>Indisponible</span>
+                    </div>
+                  ))}
+
+                  {!(t.declined && t.declined.length) && (
+                    <div className="empty-box" style={{ padding: '20px' }}>
+                      <p>Aucune déclinaison reçue pour le moment.</p>
                     </div>
                   )}
                 </div>

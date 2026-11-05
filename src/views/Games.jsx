@@ -132,21 +132,21 @@ export default function Games() {
 
       {/* Tableau des scores des équipes */}
       <div className="grid-2" style={{ marginBottom: '22px' }}>
-        <div className="card" style={{ border: '2px solid rgba(13, 59, 78, 0.2)', background: 'var(--card)' }}>
+        <div className="card" style={{ border: '1.5px solid var(--border-gold)', background: 'var(--card)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <div className="mut" style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Clan A</div>
-              <h2 style={{ margin: '2px 0 0', color: 'var(--primary)' }}>Les Aigles Bamiléké</h2>
+              <h2 style={{ margin: '2px 0 0', color: 'var(--gold)' }}>Les Aigles Bamiléké</h2>
             </div>
-            <div className="big" style={{ fontSize: '32px' }}>{scoreTeamA} pts</div>
+            <div className="big" style={{ fontSize: '32px', color: 'var(--gold)' }}>{scoreTeamA} pts</div>
           </div>
         </div>
 
-        <div className="card" style={{ border: '2px solid rgba(200, 90, 62, 0.25)', background: 'var(--card)' }}>
+        <div className="card" style={{ border: '1.5px solid rgba(148, 60, 26, 0.5)', background: 'var(--card)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <div className="mut" style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Clan B</div>
-              <h2 style={{ margin: '2px 0 0', color: 'var(--accent)' }}>Les Lions de la Lobé</h2>
+              <h2 style={{ margin: '2px 0 0', color: '#FF9E80' }}>Les Lions de la Lobé</h2>
             </div>
             <div className="big accent" style={{ fontSize: '32px' }}>{scoreTeamB} pts</div>
           </div>
@@ -158,7 +158,7 @@ export default function Games() {
         <div>
           <div className="card">
             <h2>
-              <Key size={18} color="var(--primary)" />
+              <Key size={18} color="var(--gold)" />
               Progression des 4 Clés
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '12px' }}>
@@ -172,8 +172,8 @@ export default function Games() {
                     style={{
                       padding: '14px',
                       borderRadius: 'var(--radius-md)',
-                      background: isUnlocked ? 'var(--olive-light)' : 'var(--card-subtle)',
-                      border: isUnlocked ? '1.5px solid var(--olive)' : '1px solid var(--border)',
+                      background: isUnlocked ? 'var(--forest)' : 'var(--card-subtle)',
+                      border: isUnlocked ? '1.5px solid rgba(71, 78, 48, 0.7)' : '1px solid var(--border)',
                       cursor: 'pointer',
                       transition: 'all 0.2s ease'
                     }}
@@ -182,9 +182,9 @@ export default function Games() {
                       <span className={`pill ${isUnlocked ? 'ok' : 'primary'}`} style={{ fontSize: '11px' }}>
                         {d.day}
                       </span>
-                      {isUnlocked && <span className="mut" style={{ color: 'var(--olive)', fontWeight: 700, fontSize: '12px' }}>✓ Clé Débloquée</span>}
+                      {isUnlocked && <span className="mut" style={{ color: 'var(--olive-text)', fontWeight: 700, fontSize: '12px' }}>✓ Clé Débloquée</span>}
                     </div>
-                    <div style={{ fontWeight: 700, fontSize: '15px', color: isUnlocked ? 'var(--olive)' : 'var(--primary)' }}>
+                    <div style={{ fontWeight: 700, fontSize: '15px', color: isUnlocked ? 'var(--olive-text)' : '#FFF6EE' }}>
                       {d.title}
                     </div>
                     <p style={{ margin: '6px 0 0', fontSize: '13px', color: 'var(--text-secondary)' }}>
@@ -203,7 +203,7 @@ export default function Games() {
             <h2>Indices & Carnet d’Énigmes</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '10px' }}>
               {(t.clues || []).map((c, i) => (
-                <div key={i} style={{ background: 'var(--sand-light)', padding: '12px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', fontSize: '13.5px' }}>
+                <div key={i} style={{ background: 'var(--card-alt)', padding: '12px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', fontSize: '13.5px', color: 'var(--text-secondary)' }}>
                   📜 <i>« {c} »</i>
                 </div>
               ))}
