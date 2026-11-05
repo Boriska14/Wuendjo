@@ -1,5 +1,262 @@
-export const DAYS=()=>[['Jour 1','Imagination',['Naissance des clans','Publicité de l’objet impossible','Musée vivant','Bana insolite : défi photo']],['Jour 2','Intelligence',['Enquête des sept indices','Quiz inversé','Tribunal des idées absurdes']],['Jour 3','Audace',['Reporter express','Relais des talents','Sculpture éphémère']],['Jour 4','Solidarité',['Mission secrète d’entraide','Puzzle des quatre clés et coffre final']]];
-export const TYPES=['Aventurier','Curieux de culture','Fêtard','Zen','Gourmand'];
-export const GUIDE=[['Mission du maître du jeu','Poser le cadre, distribuer les enveloppes, annoncer règles et barèmes, garder le temps, donner les indices au bon moment, noter des faits observables et protéger l’équité. Le but : une aventure fluide, drôle et mémorable, jamais des énigmes impossibles.'],['Trame et clés','Un coffre symbolique ne s’ouvre qu’avec 4 clés : Imagination (J1), Intelligence (J2), Audace (J3), Solidarité (J4). Les deux équipes doivent coopérer pour la finale.'],['Barème général (max)','Créativité 200 · Intelligence 200 · Adresse adaptée 150 · Jeux/improvisation 150 · Découverte/culture 150 · Solidarité/fair-play 150. Égalité : solidarité d’abord, puis créativité.'],['J1 · Naissance des clans (20 pts)','Nom, cri et symbole, 4 rôles tournants, présentation de 60 s. Attendu : chacun a un rôle, symbole respectueux.'],['J1 · Publicité de l’objet impossible (30 pts)','Objet banal sans danger, nom, 3 fonctions, slogan, démo de 90 à 120 s. Pas de réponse unique.'],['J1 · Musée vivant (15 pts)','Statue humaine sur carte-thème (30 s de mise en place), l’autre équipe devine. 2 pts par bonne réponse (max 10) + 5 bonus de participation équilibrée.'],['J1/J2 · Défi photo (30 pts)','3 photos : détail surprenant, esprit d’équipe, carte postale imaginaire. Refuser toute personne photographiée sans accord.'],['J2 · Enquête des sept indices (20 pts)','Un indice toutes les 2 à 3 min. Réponse attendue : une CLÉ. L’équipe justifie au moins 3 indices. Réponse 8, raisonnement 7, justification 3, écoute 2.'],['J2 · Quiz inversé (15 pts)','Réponses imposées : Bana, solidarité, une cascade, imagination, huit. Accepter les variantes de même sens.'],['J2 · Tribunal des idées absurdes (25 pts)','2 min de préparation, 2 min de plaidoirie, jury avec 2 questions. Récompenser la qualité du jeu, pas l’opinion.'],['J3 · Reporter express (25 pts)','Titre, 3 observations concrètes, conclusion, 60 à 90 s. Aucun fait culturel inventé ; accord avant toute interview.'],['J3 · Relais des talents (20 pts)','30 à 45 s par personne ; rôle discret possible. On note l’inclusion, pas le talent.'],['J3 · Sculpture éphémère (20 pts)','Uniquement des éléments déjà tombés ; remise en état du site obligatoire pour les points de respect.'],['J4 · Mission secrète d’entraide (15 pts)','Une mission positive par personne ; 2 pts par mission validée (max 12) + 3 pour la qualité de l’entraide.'],['J4 · Puzzle des quatre clés (30 pts)','Pièces mélangées entre les deux équipes ; aucune ne finit seule. Message final : ENSEMBLE. Phrase : « L’Imagination nous rassemble, l’Intelligence nous guide, l’Audace nous fait avancer, la Solidarité nous permet de réussir ENSEMBLE. »'],['Défis de secours','Suite 2, 4, 8, 16 → 32 · Code A=1 : 2-1-14-1 → BANA · Mémoire de 10 objets (1 pt chacun) · Deux vérités et un mensonge · Mime · Rébus · Cible douce · Dessin à l’aveugle (sans bandeau).'],['Sécurité et plan B pluie','Pas de course sur sol glissant, plongeon, apnée, escalade, feu ni objet tranchant. Cascades : zones autorisées et guide. Pluie : tribunal, quiz, mime, puzzle, reportage oral à l’abri.'],['Checklist','J-7 : confirmer hébergement, transport, sorties, frais inclus. J-3 : météo et plan B, imprimer cartes, enveloppes. Chaque matin : programme, limites, eau, trousse. Chaque soir : scores et enveloppe du lendemain. J4 : pièces du puzzle réparties.'],['Clôture','« Vous avez gagné bien plus que des points : quatre jours de souvenirs, de découvertes et de moments partagés. Merci d’avoir joué le jeu. »']];
-export const mk=(name,dest)=>({name,dest,dates:'Dates à confirmer',pp:175500,cap:8,wa:'237600000000',bereal:'',people:[],msgs:[],ideas:[],pays:[],ledger:[],scores:[],clues:[],done:[]});
-export const seed=()=>{const t=mk('BANA CHALLENGE','La Vallée de Bana, Ouest Cameroun');t.people=[{id:1,name:'Aïcha N.',age:27,job:'Infirmière',type:'Aventurier',st:'ok'},{id:2,name:'Brice T.',age:30,job:'Développeur',type:'Gourmand',st:'ok'},{id:3,name:'Carine M.',age:25,job:'Étudiante',type:'Curieux de culture',st:'wait'}];return t};
+export const TYPES = [
+  'Explorateur serein',
+  'Aventurier actif',
+  'Gourmet & Terroir',
+  'Photographe & Créatif',
+  'Amateur de culture & patrimoine'
+];
+
+export const DAYS = [
+  {
+    day: 'Jour 1',
+    title: 'Clé 1 : Immersion & Racines',
+    desc: 'Rencontre avec les gardiens de la tradition et énigme d’ouverture.',
+    clue: 'Au pied du baobab centenaire se cache la première boussole.'
+  },
+  {
+    day: 'Jour 2',
+    title: 'Clé 2 : Terroir & Partage',
+    desc: 'Épreuve culinaire locale et collecte d’ingrédients secrets.',
+    clue: 'Le goût de l’épice jaune vous mènera au marché des artisans.'
+  },
+  {
+    day: 'Jour 3',
+    title: 'Clé 3 : Nature & Dépassement',
+    desc: 'Randonnée des crêtes ou expédition vers les cascades sacrées.',
+    clue: 'Là où l’eau frappe la roche rouge, le troisième symbole attend.'
+  },
+  {
+    day: 'Jour 4',
+    title: 'Clé 4 : Célébration & Unité',
+    desc: 'Grande veillée autour du feu et révélation du totem Wuendjo.',
+    clue: 'Assemblez les 4 fragments pour ouvrir le coffre d’amitié.'
+  }
+];
+
+export const SUGGESTIONS = [
+  {
+    id: 'sug-kribi-chutes',
+    title: 'Chutes de la Lobé & Balade en pirogue',
+    category: 'activite',
+    suitability: ['solo', 'group'],
+    location: 'Kribi',
+    country: 'Cameroun',
+    rating: 4.9,
+    cost: '5 000 - 15 000 FCFA',
+    description: 'Une merveille naturelle mondiale où le fleuve Lobé se jette directement dans l’Océan Atlantique en cascades spectaculaires.',
+    highlight: 'Dégustation de crevettes braisées au bord de l’eau'
+  },
+  {
+    id: 'sug-kribi-crevettes',
+    title: 'Restaurant Débarcadère de la Lobé',
+    category: 'restaurant',
+    suitability: ['solo', 'group'],
+    location: 'Plage de la Lobé',
+    country: 'Cameroun',
+    rating: 4.8,
+    cost: '6 000 - 12 000 FCFA',
+    description: 'Les fameuses crevettes géantes (« Kribi ») pêchées du matin, grillées au feu de bois avec bâtons de manioc et piment doux.',
+    highlight: 'Cadre les pieds dans le sable chaud face aux rouleaux'
+  },
+  {
+    id: 'sug-bana-chefferie',
+    title: 'Royaume & Chefferie Supérieure de Bana',
+    category: 'destination',
+    suitability: ['solo', 'group'],
+    location: 'Hauts Plateaux de l’Ouest',
+    country: 'Cameroun',
+    rating: 4.9,
+    cost: '3 000 - 10 000 FCFA',
+    description: 'Immersion au cœur de l’art bamiléké : piliers sculptés ancestraux, forêt sacrée, musée du patrimoine royal et vue panoramique.',
+    highlight: 'Architecture traditionnelle en bambou et raphia'
+  },
+  {
+    id: 'sug-bana-rando',
+    title: 'Trek des Collines de la Vallée de Bana',
+    category: 'activite',
+    suitability: ['solo', 'group'],
+    location: 'Bana / Bandja',
+    country: 'Cameroun',
+    rating: 4.7,
+    cost: 'Gratuit / Guide 10 000 FCFA',
+    description: 'Randonnée vivifiante à travers les plantations de café arabica, cascades cachées et crêtes brumeuses des monts de l’Ouest.',
+    highlight: 'Air frais d’altitude et panoramas à couper le souffle'
+  },
+  {
+    id: 'sug-mara-safari',
+    title: 'Grande Traversée du Maasai Mara',
+    category: 'destination',
+    suitability: ['solo', 'group'],
+    location: 'Maasai Mara',
+    country: 'Kenya',
+    rating: 5.0,
+    cost: '35 000 - 75 000 KES / jour',
+    description: 'Le sanctuaire animalier le plus célèbre d’Afrique de l’Est : lions, éléphants, guépards et le spectacle des troupeaux en liberté.',
+    highlight: 'Lever de soleil inoubliable sur la savane dorée'
+  },
+  {
+    id: 'sug-mara-diner',
+    title: 'Boma Barbecue sous les Étoiles du Mara',
+    category: 'restaurant',
+    suitability: ['group', 'solo'],
+    location: 'Mara River',
+    country: 'Kenya',
+    rating: 4.9,
+    cost: '15 000 - 30 000 FCFA équiv.',
+    description: 'Dîner traditionnel autour d’un grand feu de camp avec viandes grillées (Nyama Choma), ugali et chants masaï au crépuscule.',
+    highlight: 'Ambiance chaleureuse et ciel étoilé immaculé'
+  },
+  {
+    id: 'sug-dakar-almadies',
+    title: 'Cabanon des Almadies & Thieboudienne',
+    category: 'restaurant',
+    suitability: ['solo', 'group'],
+    location: 'Pointe des Almadies, Dakar',
+    country: 'Sénégal',
+    rating: 4.8,
+    cost: '5 000 - 12 000 FCFA',
+    description: 'Poisson frais du jour, riz rouge aux légumes marinés et jus de bissap glacé devant le coucher du soleil le plus occidental d’Afrique.',
+    highlight: 'Le goût authentique de la Teranga sénégalaise'
+  },
+  {
+    id: 'sug-dakar-goree',
+    title: 'Maison des Esclaves & Ruelles de Gorée',
+    category: 'destination',
+    suitability: ['solo', 'group'],
+    location: 'Île de Gorée',
+    country: 'Sénégal',
+    rating: 4.9,
+    cost: '5 000 FCFA (Chaloupe + musée)',
+    description: 'Une île piétonne chargée d’histoire, avec ses façades coloniales aux teintes pastel et bougainvilliers éclatants.',
+    highlight: 'Visite guidée émouvante et artisans peintres sur sable'
+  }
+];
+
+export const mk = (name, dest, mode = 'group', status = 'active') => ({
+  id: 't-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+  name,
+  dest,
+  mode, // 'solo' ou 'group'
+  status, // 'active', 'upcoming', 'completed', 'draft'
+  dates: '12 au 18 Août 2027',
+  pp: mode === 'solo' ? 320000 : 180000,
+  cap: mode === 'solo' ? 1 : 8,
+  wa: 'https://chat.whatsapp.com/demo-wuendjo',
+  bereal: 'https://bere.al/demo-wuendjo',
+  description: mode === 'solo'
+    ? 'Voyage d’exploration en autonomie : découverte des trésors locaux, ressourcement et carnet de route.'
+    : 'Aventure collective conviviale : défis des 4 clés, découverte locale et souvenirs partagés.',
+  people: [
+    { id: 'me', name: 'Boris (Moi)', age: 28, job: 'Architecte digital', phone: '+237 690 00 00', type: 'Aventurier actif', diet: 'Sans arachides', why: 'Découvrir les trésors cachés de la région', st: 'ok', plan: '3' },
+    ...(mode === 'solo' ? [] : [
+      { id: 'p2', name: 'Nadine', age: 26, job: 'Designer textile', phone: '+237 671 11 11', type: 'Photographe & Créatif', diet: 'Végétarienne', why: 'Créer un carnet de motifs locaux', st: 'ok', plan: 'full' },
+      { id: 'p3', name: 'Cédric', age: 31, job: 'Ingénieur agronome', phone: '+237 694 22 22', type: 'Gourmet & Terroir', diet: 'Tout', why: 'Goûter la cuisine du terroir', st: 'ok', plan: '3' },
+      { id: 'p4', name: 'Aminata', age: 27, job: 'Médecin', phone: '+221 77 33 33', type: 'Explorateur serein', diet: 'Halal', why: 'Me ressourcer en pleine nature', st: 'wait', plan: '' }
+    ])
+  ],
+  itinerary: [
+    { day: 'Jour 1', time: '09:00', title: 'Départ & Arrivée sur site', desc: 'Installation dans les hébergements et accueil traditionnel.' },
+    { day: 'Jour 2', time: '10:30', title: 'Randonnée & Clé de la Découverte', desc: 'Exploration guidée des sentiers et initiation artisanale.' },
+    { day: 'Jour 3', time: '12:30', title: 'Grand Festin du Terroir', desc: 'Dégustation des spécialités culinaires avec les chefs locaux.' },
+    { day: 'Jour 4', time: '18:00', title: 'Veillée & Bilan du séjour', desc: 'Partage des récits de voyage et remise des distinctions Wuendjo.' }
+  ],
+  checklist: [
+    { id: 'c1', text: 'Pièce d’identité / Passeport en cours de validité', done: true, category: 'Administratif' },
+    { id: 'c2', text: 'Trousse de premiers secours et anti-moustique', done: true, category: 'Santé' },
+    { id: 'c3', text: 'Chaussures de marche adaptées aux sentiers', done: false, category: 'Équipement' },
+    { id: 'c4', text: 'Lampe frontale et batterie de secours solaire', done: true, category: 'Équipement' },
+    { id: 'c5', text: 'Espèces locales (FCFA) pour marchés de village', done: false, category: 'Budget' }
+  ],
+  // Grand livre de dépenses avec catégories précises pour le graphique Recharts
+  ledger: [
+    { l: 'Frais de transport & carburant minibus', s: -125000, cat: 'Transport', date: '02 Août' },
+    { l: 'Réservation écolodge & chalets bord de mer', s: -240000, cat: 'Hébergement', date: '04 Août' },
+    { l: 'Approvisionnement vivres frais & dîner d’arrivée', s: -85000, cat: 'Nourriture', date: '05 Août' },
+    { l: 'Pass d’accès parc naturel & guides écotourisme', s: -65000, cat: 'Activités', date: '07 Août' },
+    { l: 'Dégustation crevettes braisées au débarcadère', s: -45000, cat: 'Nourriture', date: '08 Août' },
+    { l: 'Navette 4x4 vers les hauts plateaux', s: -55000, cat: 'Transport', date: '10 Août' },
+    { l: 'Location pirogues & matériel d’expédition', s: -35000, cat: 'Activités', date: '11 Août' },
+    { l: 'Apport initial / Cotisations confirmées', s: 800000, cat: 'Entrées', date: '01 Août' }
+  ],
+  // Catégories du budget planifié
+  budgetPlan: {
+    transport: 220000,
+    hebergement: 280000,
+    nourriture: 160000,
+    activites: 140000
+  },
+  scores: [
+    { team: 'A', pts: 45, why: 'Énigme de la chefferie résolue' },
+    { team: 'B', pts: 40, why: 'Épreuve des épices réussie' },
+    { team: 'A', pts: 20, why: 'Photo du plus beau coucher de soleil' }
+  ],
+  done: ['c1-k1', 'c2-k2'],
+  clues: [
+    'Le vieux fromager regarde vers l’étoile du Sud.',
+    'Là où les vagues murmurent, le coffre repose sous trois galets noirs.'
+  ],
+  ideas: [
+    { k: 'Restaurant', n: 'Débarcadère de la Lobé', z: 'Crevettes braisées et vue sur l’océan', v: 4 },
+    { k: 'Activité', n: 'Descente du fleuve en pirogue traditionnelle', z: 'Avec les pêcheurs locaux au petit matin', v: 3 },
+    { k: 'Visite', n: 'Case patrimoniale des chefs bâtisseurs', z: 'Artisanat et masques rituels', v: 2 }
+  ],
+  notes: [
+    { id: 'n1', date: '10 Août · 18:30', text: 'Arrivée magique au village. L’accueil chaleureux et les odeurs de bois brûlé donnent le ton du séjour.' },
+    { id: 'n2', date: '11 Août · 12:15', text: 'La vue depuis la crête est splendide. On aperçoit toute la canopée sous une brume légère.' }
+  ],
+  msgs: [
+    { w: 'Organisateur', x: 'Bienvenue sur Wuendjo ! Préparez vos sacs légers et vos bonnes baskets.', t: '10:00' },
+    { w: 'Nadine', x: 'Trop hâte ! Mon appareil photo est déjà chargé.', t: '10:14' },
+    { w: 'Cédric', x: 'J’ai repéré les meilleures adresses pour le poisson braisé.', t: '10:30' }
+  ],
+  pays: [
+    { name: 'Nadine', l: 'Paiement unique (100 %)', a: 180000, ok: true },
+    { name: 'Cédric', l: '1er versement (50 %)', a: 90000, ok: true },
+    { name: 'Boris (Moi)', l: '1er versement (50 %)', a: 90000, ok: true }
+  ]
+});
+
+export const seed = () => [
+  {
+    ...mk('Kribi & Chutes de la Lobé', 'Kribi, Océan Atlantique (Cameroun)', 'group', 'active'),
+    dates: '12 au 18 Août 2027',
+    pp: 180000,
+    cap: 8
+  },
+  {
+    ...mk('Retraite Solitaire des Hauts Plateaux', 'Bana & Bafoussam (Cameroun)', 'solo', 'upcoming'),
+    dates: '24 au 30 Octobre 2027',
+    pp: 280000,
+    cap: 1,
+    budgetPlan: {
+      transport: 75000,
+      hebergement: 120000,
+      nourriture: 55000,
+      activites: 30000
+    },
+    ledger: [
+      { l: 'Billet de train & navette Ouest', s: -45000, cat: 'Transport', date: '01 Oct' },
+      { l: 'Chambre d’hôtes sur les collines', s: -70000, cat: 'Hébergement', date: '03 Oct' },
+      { l: 'Fonds alloués au voyage solo', s: 280000, cat: 'Entrées', date: '01 Oct' }
+    ]
+  },
+  {
+    ...mk('Safari Mythique du Maasai Mara', 'Maasai Mara & Nairobi (Kenya)', 'group', 'completed'),
+    dates: '05 au 12 Janvier 2026',
+    pp: 650000,
+    cap: 6,
+    budgetPlan: {
+      transport: 280000,
+      hebergement: 210000,
+      nourriture: 90000,
+      activites: 70000
+    },
+    ledger: [
+      { l: 'Véhicules 4x4 Safari avec chauffeur', s: -260000, cat: 'Transport', date: '05 Jan' },
+      { l: 'Tented Camp au bord de la rivière', s: -200000, cat: 'Hébergement', date: '06 Jan' },
+      { l: 'Restauration complète safari', s: -85000, cat: 'Nourriture', date: '07 Jan' },
+      { l: 'Droits d’entrée réserve nationale', s: -68000, cat: 'Activités', date: '08 Jan' },
+      { l: 'Cotisations totales du groupe', s: 650000, cat: 'Entrées', date: '01 Jan' }
+    ]
+  }
+];

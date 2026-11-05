@@ -1,0 +1,6 @@
+{
+  "name": "Wuendjo",
+  "description": "Application collaborative de gestion et d'organisation de voyages de groupe et en solo avec suivi de budget, suggestions de destinations, activités et restaurants, graphiques Recharts, jeux de piste et guides visas.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

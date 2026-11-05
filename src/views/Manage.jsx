@@ -1,18 +1,216 @@
-import {useApp,useForm,cur,F} from '../ctx.js';import {mk} from '../data.js';
-export default function Manage(){
-  const{t,org,upd}=useApp();const[f,b,reset]=useForm({sw:t.wa,sb:t.bereal,sd:t.dates});
-  if(!org)return null;
-  const wait=t.pays.map((p,i)=>({...p,i})).filter(p=>!p.ok);
-  return <>
-    <div className="card"><h2>Inscriptions</h2>{t.people.map(p=><div className="row" key={p.id}><span><b>{p.name}</b>, {p.age} ans<br/><span className="mut">{p.job} · {p.type}</span></span>
-      {p.st==='ok'?<span className="pill ok">validé</span>:p.st==='no'?<span className="pill">refusé</span>:<span><button onClick={()=>upd(s=>{cur(s).people.find(x=>x.id===p.id).st='ok'})}>Valider</button> <button className="bad" onClick={()=>upd(s=>{cur(s).people.find(x=>x.id===p.id).st='no'})}>Refuser</button></span>}</div>)}</div>
-    <div className="card"><h2>Paiements à confirmer</h2>{wait.map(p=><div className="row" key={p.i}><span>{p.name} · {p.l}<br/><span className="mut">{F(p.a)}</span></span>
-      <button onClick={()=>upd(s=>{const c=cur(s),q=c.pays[p.i];q.ok=true;c.ledger.push({l:'Versement de '+q.name+' · '+q.l,s:q.a})})}>Confirmer</button></div>)}{!wait.length&&<p className="mut">Rien en attente.</p>}</div>
-    <div className="card"><h2>Ajouter une dépense</h2><input {...b('el')} placeholder="Libellé (ex. Bungalows)"/><input type="number" {...b('ea')} placeholder="Montant FCFA"/>
-      <button onClick={()=>{if(f.ea){upd(s=>{cur(s).ledger.push({l:f.el||'Dépense',s:-Math.abs(+f.ea)})});reset()}}}>Enregistrer la dépense</button></div>
-    <div className="card"><h2>Réglages du voyage</h2><input {...b('sw')} placeholder="N° WhatsApp (ex. 2376…)"/><input {...b('sb')} placeholder="Lien BeReal"/><input {...b('sd')} placeholder="Dates"/>
-      <button onClick={()=>upd(s=>{const c=cur(s);c.wa=f.sw;c.bereal=f.sb;c.dates=f.sd})}>Enregistrer</button></div>
-    <div className="card"><h2>Nouveau voyage</h2><input {...b('vn')} placeholder="Nom du voyage"/><input {...b('vd')} placeholder="Destination"/>
-      <button className="alt" onClick={()=>{if(f.vn){upd(s=>{s.trips.push(mk(f.vn,f.vd||''));s.t=s.trips.length-1;s.tab='home'});reset()}}}>Créer le voyage</button></div>
-  </>;
+import React from 'react';
+import { useApp, useForm, cur, F } from '../ctx.js';
+import { Settings, Users, Check, X, Shield } from 'lucide-react';
+
+export default function Manage() {
+  const { t, org, upd } = useApp();
+  const [f, b] = useForm({
+    sn: t.name,
+    sd: t.dest,
+    sm: t.mode || 'group',
+    sdt: t.dates,
+    sp: t.pp,
+    sc: t.cap,
+    sw: t.wa,
+    sb: t.bereal
+  });
+
+  const isSolo = t.mode === 'solo';
+
+  if (!isSolo && !org) {
+    return (
+      <div className="card" style={{ textAlign: 'center', padding: '40px 20px' }}>
+        <Shield size={40} color="var(--accent)" style={{ margin: '0 auto 12px' }} />
+        <h2>Espace réservé à l’Organisateur</h2>
+        <p className="mut" style={{ maxWidth: '500px', margin: '0 auto 16px' }}>
+          La gestion des inscriptions, des paiements et des réglages du séjour est réservée au créateur du voyage.
+        </p>
+      </div>
+    );
+  }
+
+  const pendingPays = (t.pays || []).map((p, i) => ({ ...p, i })).filter(p => !p.ok);
+  const people = t.people || [];
+
+  const saveSettings = () => {
+    upd(s => {
+      const trip = cur(s);
+      trip.name = f.sn || trip.name;
+      trip.dest = f.sd || trip.dest;
+      trip.mode = f.sm || trip.mode;
+      trip.dates = f.sdt || trip.dates;
+      trip.pp = Number(f.sp) || trip.pp;
+      trip.cap = Number(f.sc) || trip.cap;
+      trip.wa = f.sw || trip.wa;
+      trip.bereal = f.sb || trip.bereal;
+    });
+  };
+
+  return (
+    <div>
+      <div className="card card-hero">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          <Settings size={20} color="var(--primary)" />
+          <span className="pill primary">Tableau de bord de Gestion</span>
+        </div>
+        <h1 className="big" style={{ margin: '0 0 6px', fontSize: '26px' }}>
+          Gérer {t.name}
+        </h1>
+        <p className="mut" style={{ margin: 0, fontSize: '14px' }}>
+          Configurez les paramètres du séjour, validez les participants et confirmez les paiements reçus.
+        </p>
+      </div>
+
+      <div className="grid-2">
+        <div>
+          {!isSolo && (
+            <>
+              {/* Inscriptions */}
+              <div className="card">
+                <h2>
+                  <Users size={18} color="var(--primary)" />
+                  Gestion des Inscriptions ({people.length})
+                </h2>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
+                  {people.map(p => (
+                    <div key={p.id} className="row">
+                      <div>
+                        <b>{p.name}</b> {p.age && <span className="mut">({p.age} ans)</span>}
+                        <div className="mut" style={{ fontSize: '12px' }}>
+                          {p.job} · {p.type} {p.phone && `· ${p.phone}`}
+                        </div>
+                        {p.why && <div style={{ fontSize: '12px', fontStyle: 'italic', marginTop: '2px', color: 'var(--text-muted)' }}>« {p.why} »</div>}
+                      </div>
+
+                      <div>
+                        {p.st === 'ok' ? (
+                          <span className="pill ok">Validé</span>
+                        ) : p.st === 'no' ? (
+                          <span className="pill">Refusé</span>
+                        ) : (
+                          <div style={{ display: 'flex', gap: '6px' }}>
+                            <button
+                              className="olive sm"
+                              onClick={() => upd(s => {
+                                const found = cur(s).people.find(x => x.id === p.id);
+                                if (found) found.st = 'ok';
+                              })}
+                            >
+                              <Check size={12} /> Valider
+                            </button>
+                            <button
+                              className="bad sm"
+                              onClick={() => upd(s => {
+                                const found = cur(s).people.find(x => x.id === p.id);
+                                if (found) found.st = 'no';
+                              })}
+                            >
+                              <X size={12} /> Refuser
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
+                  {!people.length && (
+                    <div className="empty-box">
+                      <p>Aucun participant inscrit pour l'instant.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Paiements */}
+              <div className="card">
+                <h2>Paiements à confirmer ({pendingPays.length})</h2>
+                <p className="mut">Les participants ayant déclaré un versement s’affichent ici.</p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
+                  {pendingPays.map(p => (
+                    <div key={p.i} className="row">
+                      <div>
+                        <b>{p.name}</b>
+                        <div className="mut" style={{ fontSize: '12px' }}>{p.l} · <b>{F(p.a)}</b></div>
+                      </div>
+                      <button
+                        className="olive sm"
+                        onClick={() => upd(s => {
+                          const trip = cur(s);
+                          const pay = trip.pays[p.i];
+                          if (pay) {
+                            pay.ok = true;
+                            if (!trip.ledger) trip.ledger = [];
+                            trip.ledger.unshift({
+                              l: `Versement de ${pay.name} · ${pay.l}`,
+                              s: pay.a,
+                              cat: 'Entrées',
+                              date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })
+                            });
+                          }
+                        })}
+                      >
+                        <Check size={13} /> Confirmer la réception
+                      </button>
+                    </div>
+                  ))}
+
+                  {!pendingPays.length && (
+                    <div className="empty-box">
+                      <p>Aucun paiement en attente de validation.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        <div>
+          {/* Paramètres du voyage */}
+          <div className="card">
+            <h2>Paramètres & Logistique du voyage</h2>
+
+            <label>Mode de voyage</label>
+            <select {...b('sm')}>
+              <option value="group">Groupe (Défis, cotisations et clans)</option>
+              <option value="solo">Solo (Autonomie, carnet et budget perso)</option>
+            </select>
+
+            <label>Intitulé du séjour</label>
+            <input {...b('sn')} placeholder="Nom du voyage" />
+
+            <label>Destination & Région</label>
+            <input {...b('sd')} placeholder="Destination" />
+
+            <label>Dates</label>
+            <input {...b('sdt')} placeholder="Ex: 12 au 18 Août 2027" />
+
+            <div className="grid-2">
+              <div>
+                <label>{f.sm === 'solo' ? 'Budget personnel (FCFA)' : 'Budget / personne (FCFA)'}</label>
+                <input type="number" {...b('sp')} />
+              </div>
+              {f.sm !== 'solo' && (
+                <div>
+                  <label>Capacité maximale</label>
+                  <input type="number" {...b('sc')} />
+                </div>
+              )}
+            </div>
+
+            <label>Lien Groupe WhatsApp</label>
+            <input {...b('sw')} placeholder="https://chat.whatsapp.com/..." />
+
+            <label>Lien Album photo BeReal / Google Photos</label>
+            <input {...b('sb')} placeholder="https://..." />
+
+            <button className="accent" onClick={saveSettings} style={{ width: '100%', marginTop: '6px' }}>
+              Enregistrer les modifications
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
