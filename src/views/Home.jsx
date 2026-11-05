@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useApp, useForm, cur, F, STATUS_MAP } from '../ctx.js';
+import { useApp, useForm, cur, F, STATUS_MAP, tripLink } from '../ctx.js';
 import { TYPES } from '../data.js';
 import Workflow from '../Workflow.jsx';
 import {
@@ -83,7 +83,7 @@ export default function Home() {
   const shareTrip = () => {
     const origin = window.location.origin;
     const pathname = window.location.pathname;
-    const shareUrl = `${origin}${pathname}?t=${S.t}&invite=1`;
+    const shareUrl = tripLink(t, S.t);
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(shareUrl).then(() => {
@@ -100,7 +100,7 @@ export default function Home() {
   };
 
   const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-    `Salut ! Je t'invite à découvrir notre voyage Wuendjo : "${t.name}" à ${t.dest} (${t.dates}).\nDécouvre le descriptif complet et dis-moi si tu participes ici : ${window.location.origin}${window.location.pathname}?t=${S.t}&invite=1`
+    `Salut ! Je t'invite à découvrir notre voyage Wuendjo : "${t.name}" à ${t.dest} (${t.dates}).\nDécouvre le descriptif complet et dis-moi si tu participes ici : ${tripLink(t, S.t)}`
   )}`;
 
   // Validation RSVP "Oui, je participe"

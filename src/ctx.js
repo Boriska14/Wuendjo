@@ -24,11 +24,11 @@ export const MODE_MAP = {
 };
 
 export const BUDGET_CATEGORIES = [
-  { id: 'transport', label: 'Transport', color: '#0D3B4E', icon: 'Plane' },
-  { id: 'hebergement', label: 'Hébergement', color: '#C85A3E', icon: 'Home' },
-  { id: 'nourriture', label: 'Nourriture & Restaurants', color: '#D49439', icon: 'Utensils' },
-  { id: 'activites', label: 'Activités & Visites', color: '#5A6B44', icon: 'Sparkles' },
-  { id: 'autre', label: 'Autres / Imprévus', color: '#7E8B92', icon: 'MoreHorizontal' }
+  { id: 'transport', label: 'Transport', color: '#4F6F7E', icon: 'Plane' },
+  { id: 'hebergement', label: 'Hébergement', color: '#B04F26', icon: 'Home' },
+  { id: 'nourriture', label: 'Nourriture & Restaurants', color: '#C9983E', icon: 'Utensils' },
+  { id: 'activites', label: 'Activités & Visites', color: '#5B7A4E', icon: 'Sparkles' },
+  { id: 'autre', label: 'Autres / Imprévus', color: '#8A7F6E', icon: 'MoreHorizontal' }
 ];
 
 export const useForm = (init = {}) => {
@@ -40,3 +40,7 @@ export const useForm = (init = {}) => {
   const reset = () => setF(init);
   return [f, b, reset, setF];
 };
+
+// Lien d'invitation : l'identifiant du voyage reste valable après suppression d'autres voyages ; l'index sert de repli.
+export const tripLink = (trip, idx) =>
+  `${window.location.origin}${window.location.pathname}?t=${idx}&id=${encodeURIComponent(trip?.id || '')}&invite=1`;

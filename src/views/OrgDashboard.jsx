@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useApp, cur, F } from '../ctx.js';
+import { useApp, cur, F, tripLink } from '../ctx.js';
 import Workflow from '../Workflow.jsx';
 import { Users, Clock, Wallet, CalendarDays, Copy, Check, Eye } from 'lucide-react';
 
@@ -15,7 +15,7 @@ export default function OrgDashboard() {
   const ideas = (t.ideas || []).length;
   const spent = (t.ledger || []).filter(x => x.s < 0).reduce((a, x) => a - x.s, 0);
 
-  const link = `${window.location.origin}${window.location.pathname}?t=${S.t}&invite=1`;
+  const link = tripLink(t, S.t);
   const copyLink = () => {
     const done = () => {
       upd(s => { cur(s).invited = true; });

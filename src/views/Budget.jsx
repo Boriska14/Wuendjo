@@ -37,11 +37,11 @@ import {
 import { DeleteBtn } from '../ui.jsx';
 
 const CATEGORY_META = {
-  'Transport': { label: 'Transport', color: '#A7795E', icon: Plane, bg: '#F2E8E0' },
-  'Hébergement': { label: 'Hébergement', color: '#934C1A', icon: Home, bg: '#F3E1CF' },
-  'Nourriture': { label: 'Nourriture', color: '#BB8130', icon: Utensils, bg: '#F7ECD5' },
-  'Activités': { label: 'Activités', color: '#474E30', icon: Sparkles, bg: '#E4E8D5' },
-  'Autre': { label: 'Autres', color: '#6E3C19', icon: MoreHorizontal, bg: '#EADBCB' }
+  'Transport': { label: 'Transport', color: '#4F6F7E', icon: Plane, bg: '#E4ECEF' },
+  'Hébergement': { label: 'Hébergement', color: '#B04F26', icon: Home, bg: '#F5E3D6' },
+  'Nourriture': { label: 'Nourriture', color: '#C9983E', icon: Utensils, bg: '#F4EAD0' },
+  'Activités': { label: 'Activités', color: '#5B7A4E', icon: Sparkles, bg: '#E2EADB' },
+  'Autre': { label: 'Autres', color: '#8A7F6E', icon: MoreHorizontal, bg: '#EEE9E0' }
 };
 
 // Grille de devises internationales courantes pour les voyages en Afrique et dans le monde
@@ -486,8 +486,8 @@ export default function Budget() {
                     <XAxis dataKey="name" stroke="var(--text-muted)" fontSize={12} tickLine={false} />
                     <YAxis stroke="var(--text-muted)" fontSize={11} tickFormatter={v => `${v / 1000}k`} tickLine={false} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="Réel" fill="#934C1A" radius={[4, 4, 0, 0]} />
-                    <Bar dataKey="Prévu" fill="#C9A27F" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="Réel" fill="#B04F26" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="Prévu" fill="#DDBFA5" radius={[4, 4, 0, 0]} />
                     <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px', color: 'var(--text-secondary)' }} />
                   </BarChart>
                 )}

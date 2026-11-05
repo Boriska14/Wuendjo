@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp, F, STATUS_MAP } from '../ctx.js';
 import { mk } from '../data.js';
+import { DeleteBtn } from '../ui.jsx';
 import { Users, User, Calendar, MapPin, Plus, X, CheckCircle2, ArrowRight, History as HistoryIcon } from 'lucide-react';
 
 export default function History() {
@@ -54,6 +55,18 @@ export default function History() {
 
     setShowCreateModal(false);
     setNewTrip({ name: '', dest: '', mode: 'group', dates: '', budget: 180000, cap: 8 });
+  };
+
+  const deleteTrip = (idx) => {
+    if (trips.length <= 1) return;
+    const removed = trips[idx];
+    try { if (removed) localStorage.removeItem(`wuendjo_rsvp_${removed.id || idx}`); } catch {}
+    upd(s => {
+      if (s.trips.length <= 1 || !s.trips[idx]) return;
+      s.trips.splice(idx, 1);
+      if (s.t === idx) s.t = 0;
+      else if (s.t > idx) s.t -= 1;
+    });
   };
 
   const markCompleted = (originalIdx) => {
@@ -229,7 +242,7 @@ export default function History() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px solid var(--border-light)' }}>
+              <div className="trip-actions">
                 <button
                   className="subtle sm"
                   onClick={() => markCompleted(trip.originalIdx)}
@@ -238,6 +251,13 @@ export default function History() {
                   <CheckCircle2 size={13} color={trip.status === 'completed' ? 'var(--olive-text)' : 'var(--text-muted)'} />
                   {trip.status === 'completed' ? 'Marqué terminé' : 'Terminer'}
                 </button>
+
+                <DeleteBtn
+                  onConfirm={() => deleteTrip(trip.originalIdx)}
+                  disabled={trips.length <= 1}
+                  label="Supprimer ce voyage"
+                  title={trips.length <= 1 ? 'Gardez au moins un voyage : créez-en un autre avant de supprimer celui-ci' : 'Supprimer ce voyage'}
+                />
 
                 {isCurrent ? (
                   <button className="accent sm" onClick={() => go('home')}>

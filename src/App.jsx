@@ -34,7 +34,9 @@ import {
   LogOut,
   Lock,
   Plus,
-  ArrowLeft
+  ArrowLeft,
+  Menu,
+  X
 } from 'lucide-react';
 
 const V = {
@@ -84,7 +86,12 @@ const load = () => {
   try {
     const params = new URLSearchParams(window.location.search);
     const tripParam = params.get('trip') || params.get('t');
-    if (tripParam !== null && !isNaN(Number(tripParam))) {
+    const idParam = params.get('id');
+    const byId = idParam ? state.trips.findIndex(x => x.id === idParam) : -1;
+    if (byId >= 0) {
+      state.t = byId;
+      state.tab = 'home';
+    } else if (tripParam !== null && !isNaN(Number(tripParam))) {
       const idx = parseInt(tripParam, 10);
       if (idx >= 0 && idx < state.trips.length) {
         state.t = idx;
@@ -117,6 +124,7 @@ const participantFor = (S, t) => {
 export default function App() {
   const [S, setS] = useState(load);
   const [mode, setMode] = useState(initialMode); // 'gate' | 'p' | 'o'
+  const [menu, setMenu] = useState(false); // tiroir de navigation (mobile)
 
   useEffect(() => {
     try {
@@ -150,6 +158,7 @@ export default function App() {
     let key = k;
     if (org && k === 'home') key = 'dash';
     if (k === 'gerer') key = org ? 'people' : 'home';
+    setMenu(false);
     upd(s => { s.tab = key; });
   };
 
@@ -204,7 +213,18 @@ export default function App() {
     return (
       <Ctx.Provider value={ctx}>
         <div className="org-shell">
-          <aside className="org-side dark-scope">
+          <header className="org-topbar">
+            <button className="org-menu-btn" onClick={() => setMenu(m => !m)} aria-label={menu ? 'Fermer le menu' : 'Ouvrir le menu'} aria-expanded={menu}>
+              {menu ? <X size={20} /> : <Menu size={20} />}
+            </button>
+            <div className="org-topbar-title">
+              <strong>{(nav.find(n => n[0] === tab) || nav[0])[1]}</strong>
+              <span>{t.name}</span>
+            </div>
+            {pendingCount > 0 && !isSolo && <span className="org-badge">{pendingCount}</span>}
+          </header>
+          {menu && <div className="org-backdrop" onClick={() => setMenu(false)} />}
+          <aside className={`org-side ${menu ? 'open' : ''}`}>
             <div className="brand-wrap" onClick={() => go('dash')}>
               <div className="brand-logo-mark">W</div>
               <div>
@@ -218,7 +238,7 @@ export default function App() {
               <select
                 id="org-trip-select"
                 value={S.t}
-                onChange={e => upd(s => { s.t = +e.target.value; s.tab = 'dash'; })}
+                onChange={e => { setMenu(false); upd(s => { s.t = +e.target.value; s.tab = 'dash'; }); }}
               >
                 {trips.map((x, i) => (
                   <option key={i} value={i}>{x.name} ({x.mode === 'solo' ? 'Solo' : 'Groupe'})</option>
@@ -283,7 +303,7 @@ export default function App() {
           </div>
         )}
 
-        <header className="site-header dark-scope">
+        <header className="site-header">
           <div className="site-header-inner">
             <div className="brand-wrap" onClick={() => go('home')}>
               <div className="brand-logo-mark">W</div>
