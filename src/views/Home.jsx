@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp, useForm, cur, F, STATUS_MAP, tripLink } from '../ctx.js';
 import { TYPES } from '../data.js';
 import Workflow from '../Workflow.jsx';
+import { ExampleBadge } from '../ui.jsx';
 import {
   MapPin,
   Calendar,
@@ -23,11 +24,12 @@ import {
   Utensils,
   ShieldCheck,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  AlertCircle
 } from 'lucide-react';
 
 export default function Home() {
-  const { S, t, me, org, ok, upd, go } = useApp();
+  const { S, t, me, org, ok, upd, go, guestName, setGuestName, showToast } = useApp();
   const [f, b, reset] = useForm();
   const [newCheckItem, setNewCheckItem] = useState('');
   const [newItinDay, setNewItinDay] = useState('');
@@ -38,9 +40,10 @@ export default function Home() {
   const [rsvpMode, setRsvpMode] = useState(null); // 'yes' | 'no' | null
   const [copiedToast, setCopiedToast] = useState(false);
   const [feedbackMsg, setFeedbackMsg] = useState('');
+  const [formErr, setFormErr] = useState('');
 
   // Formulaire RSVP "Oui, je participe"
-  const [yesName, setYesName] = useState('');
+  const [yesName, setYesName] = useState(() => guestName || '');
   const [yesPhone, setYesPhone] = useState('');
   const [yesAge, setYesAge] = useState('');
   const [yesJob, setYesJob] = useState('');
@@ -49,8 +52,16 @@ export default function Home() {
   const [yesWhy, setYesWhy] = useState('');
 
   // Formulaire RSVP "Je ne pourrai pas"
-  const [noName, setNoName] = useState('');
+  const [noName, setNoName] = useState(() => guestName || '');
   const [noWhy, setNoWhy] = useState('');
+
+  // Synchroniser avec guestName s'il change depuis la barre d'identité
+  useEffect(() => {
+    if (guestName) {
+      if (!yesName) setYesName(guestName);
+      if (!noName) setNoName(guestName);
+    }
+  }, [guestName]);
 
   // Réponse mémorisée localement pour cet utilisateur
   const [myRsvpStatus, setMyRsvpStatus] = useState(() => {
@@ -81,21 +92,18 @@ export default function Home() {
 
   // Copier le lien d'invitation à partager aux amis
   const shareTrip = () => {
-    const origin = window.location.origin;
-    const pathname = window.location.pathname;
     const shareUrl = tripLink(t, S.t);
 
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        setCopiedToast(true);
-        setTimeout(() => setCopiedToast(false), 3500);
-      }).catch(() => {
-        setCopiedToast(true);
-        setTimeout(() => setCopiedToast(false), 3500);
-      });
-    } else {
+    const onDone = () => {
       setCopiedToast(true);
+      if (showToast) showToast('Lien d’invitation copié ! Partagez-le avec vos amis.', 'ok');
       setTimeout(() => setCopiedToast(false), 3500);
+    };
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).then(onDone).catch(onDone);
+    } else {
+      onDone();
     }
   };
 
@@ -106,8 +114,10 @@ export default function Home() {
   // Validation RSVP "Oui, je participe"
   const submitYesParticipation = (e) => {
     if (e) e.preventDefault();
+    setFormErr('');
     if (!yesName.trim()) {
-      alert('Veuillez renseigner votre nom pour valider votre participation.');
+      setFormErr('Veuillez renseigner votre nom complet pour valider votre participation.');
+      if (showToast) showToast('Veuillez renseigner votre nom complet.', 'error');
       return;
     }
 
@@ -137,6 +147,9 @@ export default function Home() {
     localStorage.setItem(`wuendjo_rsvp_${t.id || S.t}`, JSON.stringify(rsvpData));
     setMyRsvpStatus(rsvpData);
 
+    if (setGuestName) setGuestName(yesName.trim());
+    if (showToast) showToast(`Participation confirmée pour ${yesName.trim()} !`, 'ok');
+
     setFeedbackMsg(`Félicitations ${yesName.trim()} ! Votre participation a bien été enregistrée. L’organisateur a été prévenu.`);
     setRsvpMode(null);
   };
@@ -144,8 +157,10 @@ export default function Home() {
   // Validation RSVP "Non, je ne peux pas"
   const submitNoDecline = (e) => {
     if (e) e.preventDefault();
+    setFormErr('');
     if (!noName.trim()) {
-      alert('Veuillez renseigner votre nom.');
+      setFormErr('Veuillez renseigner votre nom ou prénom.');
+      if (showToast) showToast('Veuillez renseigner votre nom ou prénom.', 'error');
       return;
     }
 
@@ -170,6 +185,9 @@ export default function Home() {
     const rsvpData = { decision: 'no', name: noName.trim(), why: noWhy.trim(), date: nowStr };
     localStorage.setItem(`wuendjo_rsvp_${t.id || S.t}`, JSON.stringify(rsvpData));
     setMyRsvpStatus(rsvpData);
+
+    if (setGuestName) setGuestName(noName.trim());
+    if (showToast) showToast('Réponse transmise à l’organisateur.', 'info');
 
     setFeedbackMsg(`Merci ${noName.trim()} d'avoir prévenu l'organisateur ! Ce sera avec grand plaisir pour le prochain voyage.`);
     setRsvpMode(null);
@@ -241,6 +259,7 @@ export default function Home() {
         <div className="invite-top">
           <div className="invite-tags">
             <span className="pill accent">Invitation au voyage</span>
+            {t.isExample && <ExampleBadge />}
             <span className="pill outline">{isSolo ? 'Carnet solo' : 'Organisé sur Wuendjo'}</span>
             <span className="pill outline">{statusInfo.label}</span>
           </div>
@@ -337,7 +356,7 @@ export default function Home() {
                   <h3>Vous avez décliné cette invitation</h3>
                   <p className="mut">Motif : « {myRsvpStatus?.why || 'Non disponible'} ». Merci d'avoir prévenu l'organisateur.</p>
                 </div>
-                <button className="accent sm" onClick={() => { setMyRsvpStatus(null); setRsvpMode('yes'); }}>
+                <button className="accent sm" onClick={() => { setMyRsvpStatus(null); setRsvpMode('yes'); setFormErr(''); }}>
                   J'ai changé d'avis, je participe
                 </button>
               </div>
@@ -350,10 +369,10 @@ export default function Home() {
                   <p className="mut">Répondez en un clic pour aider l’organisateur à finaliser les réservations et le programme.</p>
                 </div>
                 <div className="rsvp-actions">
-                  <button className="accent" onClick={() => setRsvpMode('yes')}>
+                  <button className="accent" onClick={() => { setRsvpMode('yes'); setFormErr(''); }}>
                     <Check size={16} /> Oui, je participe
                   </button>
-                  <button className="subtle" onClick={() => setRsvpMode('no')}>
+                  <button className="subtle" onClick={() => { setRsvpMode('no'); setFormErr(''); }}>
                     Je ne pourrai pas
                   </button>
                 </div>
@@ -364,18 +383,24 @@ export default function Home() {
               <form onSubmit={submitYesParticipation}>
                 <div className="rsvp-form-head">
                   <span>Confirmer ma participation</span>
-                  <button type="button" className="subtle sm" onClick={() => setRsvpMode(null)}>
+                  <button type="button" className="subtle sm" onClick={() => { setRsvpMode(null); setFormErr(''); }}>
                     <X size={14} /> Annuler
                   </button>
                 </div>
 
+                {formErr && (
+                  <div style={{ color: 'var(--bad)', fontSize: '13px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }} role="alert">
+                    <AlertCircle size={15} /> {formErr}
+                  </div>
+                )}
+
                 <div className="grid-2">
                   <div>
                     <label>Votre nom complet *</label>
-                    <input required value={yesName} onChange={e => setYesName(e.target.value)} placeholder="Ex: Paul Mbarga" />
+                    <input required value={yesName} onChange={e => { setYesName(e.target.value); setFormErr(''); }} placeholder="Ex: Paul Mbarga" />
                   </div>
                   <div>
-                    <label>N° de téléphone ou WhatsApp *</label>
+                    <label>N° de téléphone ou WhatsApp</label>
                     <input value={yesPhone} onChange={e => setYesPhone(e.target.value)} placeholder="+237 6XX XX XX XX" />
                   </div>
                 </div>
@@ -402,7 +427,7 @@ export default function Home() {
                 />
 
                 <div className="rsvp-form-actions">
-                  <button type="button" className="subtle" onClick={() => setRsvpMode(null)}>Retour</button>
+                  <button type="button" className="subtle" onClick={() => { setRsvpMode(null); setFormErr(''); }}>Retour</button>
                   <button type="submit" className="accent"><Check size={16} /> Valider ma participation</button>
                 </div>
               </form>
@@ -412,10 +437,16 @@ export default function Home() {
               <form onSubmit={submitNoDecline}>
                 <div className="rsvp-form-head">
                   <span>Transmettre une réponse négative</span>
-                  <button type="button" className="subtle sm" onClick={() => setRsvpMode(null)}>
+                  <button type="button" className="subtle sm" onClick={() => { setRsvpMode(null); setFormErr(''); }}>
                     <X size={14} /> Annuler
                   </button>
                 </div>
+
+                {formErr && (
+                  <div style={{ color: 'var(--bad)', fontSize: '13px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }} role="alert">
+                    <AlertCircle size={15} /> {formErr}
+                  </div>
+                )}
 
                 <div className="grid-2">
                   <div>

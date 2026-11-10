@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { tv, arr, lab, idf, Show } from '../travora.jsx';
+import { Skeleton, EmptyState, ErrorState } from '../ui.jsx';
 import { Search, Globe, MapPin, Calendar, CreditCard } from 'lucide-react';
 
 export default function Visa() {
@@ -142,15 +143,47 @@ export default function Visa() {
               </button>
             </div>
 
-            {err && (
-              <div style={{ marginTop: '12px', padding: '10px 14px', background: 'var(--bad-bg)', color: 'var(--bad)', border: '1px solid #F0C9C5', borderRadius: 'var(--radius-sm)', fontSize: '13px' }}>
-                {err}
+            {err && !busy && (
+              <div style={{ marginTop: '14px' }}>
+                <ErrorState
+                  message={err}
+                  onRetry={() => { setErr(''); search(); }}
+                />
               </div>
             )}
           </div>
 
+          {/* État de chargement avec Skeletons */}
+          {busy && (
+            <div className="card" aria-busy="true" aria-live="polite">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                <Skeleton width="180px" height="20px" />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {[1, 2, 3].map(i => (
+                  <div key={i} style={{ padding: '12px', borderRadius: 'var(--radius-md)', background: 'var(--card-subtle)' }}>
+                    <Skeleton width="40%" height="18px" style={{ marginBottom: '8px' }} />
+                    <Skeleton width="85%" height="14px" style={{ marginBottom: '6px' }} />
+                    <Skeleton width="60%" height="12px" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* État vide guidé */}
+          {!busy && !err && res.length === 0 && (
+            <EmptyState
+              icon={Globe}
+              title="Préparez vos formalités de voyage"
+              description="Sélectionnez votre pays d'origine et tapez une destination ou choisissez une des suggestions populaires ci-dessus pour vérifier les conditions de visa en un instant."
+              actionLabel="Consulter le Kenya"
+              onAction={() => quickSearch('Kenya')}
+            />
+          )}
+
           {/* Liste des résultats */}
-          {res.length > 0 && (
+          {!busy && res.length > 0 && (
             <div className="card">
               <h2>Résultats pour votre voyage ({res.length})</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>

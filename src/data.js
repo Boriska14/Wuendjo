@@ -153,12 +153,13 @@ export const SUGGESTIONS = [
   }
 ];
 
-export const mk = (name, dest, mode = 'group', status = 'active') => ({
+export const mk = (name, dest, mode = 'group', status = 'active', isExample = false) => ({
   id: 't-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
   name,
   dest,
   mode, // 'solo' ou 'group'
   status, // 'active', 'upcoming', 'completed', 'draft'
+  isExample, // true si voyage de démonstration/gabarit, false si voyage réel de l'utilisateur
   dates: '12 au 18 Août 2027',
   pp: mode === 'solo' ? 320000 : 180000,
   cap: mode === 'solo' ? 1 : 8,
@@ -251,16 +252,18 @@ export const mk = (name, dest, mode = 'group', status = 'active') => ({
 
 export const seed = () => [
   {
-    ...mk('Kribi & Chutes de la Lobé', 'Kribi, Océan Atlantique (Cameroun)', 'group', 'active'),
+    ...mk('Kribi & Chutes de la Lobé', 'Kribi, Océan Atlantique (Cameroun)', 'group', 'active', true),
     dates: '12 au 18 Août 2027',
     pp: 180000,
-    cap: 8
+    cap: 8,
+    isExample: true
   },
   {
-    ...mk('Retraite Solitaire des Hauts Plateaux', 'Bana & Bafoussam (Cameroun)', 'solo', 'upcoming'),
+    ...mk('Retraite Solitaire des Hauts Plateaux', 'Bana & Bafoussam (Cameroun)', 'solo', 'upcoming', true),
     dates: '24 au 30 Octobre 2027',
     pp: 280000,
     cap: 1,
+    isExample: true,
     budgetPlan: {
       transport: 75000,
       hebergement: 120000,
@@ -274,10 +277,11 @@ export const seed = () => [
     ]
   },
   {
-    ...mk('Safari Mythique du Maasai Mara', 'Maasai Mara & Nairobi (Kenya)', 'group', 'completed'),
+    ...mk('Safari Mythique du Maasai Mara', 'Maasai Mara & Nairobi (Kenya)', 'group', 'completed', true),
     dates: '05 au 12 Janvier 2026',
     pp: 650000,
     cap: 6,
+    isExample: true,
     budgetPlan: {
       transport: 280000,
       hebergement: 210000,
